@@ -8,7 +8,7 @@ A collection of atmospheric **Wuxia-style** web minigames, inspired by the aesth
 
 ## 🏯 Enter the Pavilion
 
-[**Play Now / 立即开始**](https://adromir.github.io/graceful-melody/)
+[**Play Now / 立即开始**](https://adromir.github.io/wwm-minigames/)
 *(Note: Adjust this link to your repo: `https://<your-user>.github.io/<repo-name>/`)*
 
 ---

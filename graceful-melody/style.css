@@ -1,0 +1,515 @@
+/* * Wuxia Style Theme - "Jade & Mahogany"
+ * Author: Adromir
+ */
+:root {
+	--wood-dark: #2a1b15;
+	--wood-light: #4e342e;
+	--gold-metallic: #d4af37;
+	--gold-shadow: #8f6f32;
+	--jade-light: #a7ffeb;
+	--jade-main: #00bfa5;
+	--jade-dark: #004d40;
+	
+	/* Paper Theme Colors */
+	--paper-bg: #f3e5d0;
+	--ink-dark: #1a1a1a;
+	--ink-light: #3a3a3a;
+	--cinnabar: #a83f39;
+	
+	/* Fonts */
+	--font-brush: 'Long Cang', cursive; /* Calligraphy */
+	--font-serif: 'Noto Serif SC', serif; /* Body text */
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #0d0d0d;
+	background-image: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+	font-family: var(--font-serif);
+	color: #fff;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	user-select: none;
+}
+
+/* The Instrument Body (Outer Frame) */
+#game-wrapper {
+	position: relative;
+	padding: 25px;
+	background: 
+		linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 10%, rgba(255,255,255,0.02) 20%, rgba(255,255,255,0) 30%),
+		repeating-linear-gradient(45deg, #2a1b15 0px, #231612 10px, #3e2723 20px, #2a1b15 30px);
+	border-radius: 12px;
+	box-shadow: 
+		inset 0 0 20px rgba(0,0,0,0.8),
+		0 30px 60px rgba(0,0,0,0.9),
+		0 0 0 2px #5d4037;
+}
+
+/* The Soundboard (Play Area) */
+#game-container {
+	position: relative;
+	width: 800px;
+	height: 800px;
+	background: radial-gradient(ellipse at center, #3e2723 0%, #1a0f0d 100%);
+	box-shadow: inset 0 0 100px #000;
+	border-radius: 6px;
+	overflow: hidden;
+	border: 1px solid rgba(255,255,255,0.1);
+}
+
+canvas {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+#ui-layer {
+	position: absolute;
+	top: 0; left: 0; width: 100%; height: 100%;
+	pointer-events: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	z-index: 10;
+}
+
+/* Header & Progress Bar */
+.header-container {
+	width: 100%;
+	background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+	padding-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.header h1 {
+	margin: 10px 0 0 0;
+	text-align: center;
+	font-family: var(--font-brush);
+	font-size: 48px;
+	letter-spacing: 2px;
+	background: linear-gradient(180deg, #fff 0%, #d4af37 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+	font-weight: 400;
+}
+
+/* Progress Bar */
+.progress-container {
+	width: 60%;
+	height: 4px;
+	background: rgba(255,255,255,0.1);
+	border-radius: 2px;
+	margin-top: 10px;
+	position: relative;
+	overflow: hidden;
+}
+
+.progress-fill {
+	height: 100%;
+	width: 0%;
+	background: linear-gradient(90deg, #d4af37, #fff8e1);
+	box-shadow: 0 0 10px #d4af37;
+	transition: width 0.2s linear;
+}
+
+.score-board {
+	font-family: var(--font-brush);
+	font-size: 36px;
+	color: var(--gold-metallic);
+	margin-top: -5px;
+	text-shadow: 0 2px 0 #000;
+}
+
+/* Controls - Organic Stamp Style - REPOSITIONED TO BOTTOM RIGHT */
+.controls {
+	position: absolute;
+	bottom: 20px; /* Changed from top to bottom */
+	right: 20px;
+	pointer-events: auto;
+}
+
+.control-panel {
+	display: flex;
+	gap: 10px;
+	background: rgba(0,0,0,0.3);
+	padding: 5px;
+	border-radius: 8px;
+	border: 1px solid rgba(255,255,255,0.1);
+}
+
+.control-jade {
+	background: linear-gradient(180deg, #004d40 0%, #00695c 100%);
+	border: 1px solid #4db6ac;
+	border-bottom: 2px solid #00251a;
+	border-radius: 4px;
+	color: #e0f2f1;
+	font-family: var(--font-serif);
+	padding: 5px 12px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-width: 60px;
+	transition: all 0.1s;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.control-jade:hover {
+	background: linear-gradient(180deg, #00695c 0%, #004d40 100%);
+	color: #fff;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+}
+
+.control-jade:active {
+	transform: translateY(1px);
+	border-bottom: 1px solid #00251a;
+	box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.control-jade .c-icon {
+	font-size: 16px;
+	margin-bottom: 2px;
+}
+
+.control-jade .c-label {
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+/* Dark variant for paper menu */
+.control-jade.dark {
+	background: transparent;
+	border: 2px solid var(--ink-dark);
+	color: var(--ink-dark);
+	box-shadow: none;
+	font-family: var(--font-brush);
+	font-size: 24px;
+	padding: 5px 30px;
+}
+
+.control-jade.dark:hover {
+	background: rgba(168, 63, 57, 0.1);
+	color: var(--cinnabar);
+	border-color: var(--cinnabar);
+}
+
+#combo-display {
+	position: absolute;
+	top: 35%; left: 50%;
+	transform: translate(-50%, -50%);
+	font-family: var(--font-brush);
+	font-size: 110px;
+	background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	white-space: nowrap;
+	pointer-events: none;
+	z-index: 5;
+}
+
+#feedback-text {
+	position: absolute;
+	bottom: 250px;
+	left: 50%;
+	transform: translateX(-50%);
+	font-family: var(--font-brush);
+	font-size: 64px;
+	background: linear-gradient(180deg, #fff8e1 0%, #ff6f00 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	filter: drop-shadow(0 0 10px rgba(255, 111, 0, 0.6));
+	opacity: 0;
+	transition: opacity 0.2s;
+	z-index: 20;
+}
+
+/* === Screens (Ink on Parchment Style) === */
+#start-screen, #game-over-screen, #song-select-screen {
+	position: absolute;
+	top: 0; left: 0; width: 100%; height: 100%;
+	background-color: var(--paper-bg);
+	background-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.15"/></svg>');
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	pointer-events: all;
+	z-index: 30;
+	color: var(--ink-dark);
+	box-shadow: inset 0 0 100px rgba(42, 27, 21, 0.3);
+}
+.hidden { display: none !important; }
+
+/* Screen Typography */
+h1.screen-title {
+	background: none; 
+	-webkit-background-clip: unset; 
+	-webkit-text-fill-color: var(--ink-dark);
+	font-family: var(--font-brush);
+	color: var(--ink-dark);
+	font-size: 80px; 
+	letter-spacing: 0px;
+	border-bottom: 2px solid var(--cinnabar);
+	padding-bottom: 5px;
+	margin-bottom: 0px;
+	text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+	line-height: 1;
+}
+
+p.screen-subtitle {
+	color: var(--ink-light);
+	font-style: italic;
+	letter-spacing: 1px;
+	font-size: 18px;
+	margin-top: 10px;
+}
+
+/* Menu Highscore Text */
+#menu-highscores {
+	margin-top: 20px;
+	color: var(--ink-light);
+	font-size: 16px;
+	text-align: center;
+	font-family: var(--font-serif);
+	background: rgba(0,0,0,0.05);
+	padding: 8px 20px;
+	border-radius: 4px;
+	border-left: 3px solid var(--cinnabar);
+}
+
+/* Difficulty Buttons (Seal Style) */
+.difficulty-container, .song-container {
+	display: flex;
+	gap: 25px;
+	margin-top: 40px;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.song-container {
+	max-height: 400px;
+	overflow-y: auto;
+	width: 80%;
+	padding: 10px;
+}
+
+.diff-btn, .song-btn {
+	width: 140px;
+	height: 140px;
+	background: transparent;
+	border: 3px double var(--ink-dark);
+	border-radius: 50%; /* Round Seals */
+	position: relative;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	color: var(--ink-dark);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	box-shadow: none;
+	overflow: hidden; 
+}
+
+/* Song Button specific styling (Rectangular Tablets) */
+.song-btn {
+	width: 200px;
+	height: 100px;
+	border-radius: 8px;
+	border: 2px solid var(--ink-dark);
+}
+
+/* Watermark Characters using ::before */
+.diff-btn::before {
+	content: '';
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%, -50%);
+	font-family: var(--font-serif);
+	font-size: 90px;
+	opacity: 0.25;
+	color: var(--ink-dark);
+	pointer-events: none;
+	z-index: 0;
+	line-height: 1;
+}
+
+/* Specific Characters */
+.diff-btn.novice::before { content: '初'; }      /* Chū - Initial */
+.diff-btn.disciple::before { content: '徒'; }    /* Tú - Disciple */
+.diff-btn.master::before { content: '师'; }      /* Shī - Master */
+.diff-btn.grandmaster::before { content: '宗'; } /* Zōng - Ancestor/Grandmaster */
+
+.diff-btn:hover, .song-btn:hover {
+	transform: scale(1.05) rotate(-1deg);
+	background: rgba(168, 63, 57, 0.05);
+	color: var(--cinnabar);
+	border-color: var(--cinnabar);
+}
+
+.diff-btn:hover::before {
+	color: var(--cinnabar);
+	opacity: 0.4;
+}
+
+.diff-btn:hover span, .song-btn:hover span { color: var(--cinnabar); }
+
+.diff-btn strong, .song-btn strong { 
+	font-family: var(--font-brush);
+	font-size: 32px; 
+	margin-bottom: 0px; 
+	text-shadow: none;
+	font-weight: 400;
+	line-height: 1;
+	position: relative;
+	z-index: 1;
+}
+
+.song-btn strong { font-size: 28px; }
+
+.diff-btn span, .song-btn span { 
+	font-family: var(--font-serif);
+	font-size: 14px; 
+	opacity: 0.8; 
+	font-style: italic; 
+	margin-top: 5px;
+	position: relative;
+	z-index: 1;
+}
+
+.instructions {
+	margin-top: 40px; font-size: 16px; color: var(--ink-light); text-align: center;
+	line-height: 1.6; text-shadow: none;
+	border-top: 1px solid rgba(0,0,0,0.1);
+	padding-top: 20px;
+	width: 60%;
+}
+.instructions b { color: var(--cinnabar); }
+
+/* Detailed Result Board */
+.result-board {
+	background: transparent;
+	border-top: 2px solid var(--ink-dark);
+	border-bottom: 2px solid var(--ink-dark);
+	border-radius: 0;
+	padding: 20px 40px;
+	width: 60%;
+	box-shadow: none;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 30px;
+	position: relative;
+}
+
+/* Vertical lines for scroll effect */
+.result-board::after {
+	content: '';
+	position: absolute;
+	top: -10px; bottom: -10px; left: 10px; right: 10px;
+	border-left: 1px solid rgba(0,0,0,0.05);
+	border-right: 1px solid rgba(0,0,0,0.05);
+	pointer-events: none;
+}
+
+.stat-row {
+	display: flex;
+	justify-content: space-between;
+	font-size: 18px;
+	color: var(--ink-dark);
+	border-bottom: 1px dashed rgba(0,0,0,0.1);
+	padding-bottom: 5px;
+}
+.stat-row.total {
+	border-bottom: none;
+	border-top: 2px solid var(--cinnabar);
+	margin-top: 15px;
+	padding-top: 10px;
+	font-size: 24px;
+	color: var(--cinnabar);
+	font-family: var(--font-brush);
+}
+
+.stat-label { font-weight: bold; opacity: 0.7; font-family: var(--font-serif); }
+.stat-value { font-family: var(--font-serif); font-size: 22px; font-weight: bold; }
+
+.highscore-notice {
+	color: var(--cinnabar);
+	font-family: var(--font-brush);
+	font-size: 20px;
+	margin-left: 10px;
+	border: 1px solid var(--cinnabar);
+	padding: 0px 8px;
+	border-radius: 4px;
+	transform: rotate(-5deg);
+	display: inline-block;
+}
+
+/* Game Over Specifics */
+#game-over-screen h1 {
+	color: var(--cinnabar);
+	font-family: var(--font-brush);
+	text-shadow: none;
+	font-size: 64px;
+	border-bottom: none;
+	margin-bottom: 0;
+	line-height: 1;
+}
+
+#rank-text {
+	font-size: 80px; 
+	font-weight: 400; 
+	color: var(--ink-dark);
+	text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+	margin: 0 0 20px 0;
+	font-family: var(--font-brush);
+	line-height: 1;
+}
+
+/* Countdown Overlay */
+#countdown-overlay {
+	position: absolute;
+	top: 0; left: 0; width: 100%; height: 100%;
+	background: rgba(0,0,0,0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 50;
+	pointer-events: none;
+}
+
+#countdown-text {
+	font-family: var(--font-brush);
+	font-size: 200px;
+	color: #fff;
+	text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+	animation: fadeScale 1s infinite;
+}
+
+@keyframes fadeScale {
+	0% { opacity: 0; transform: scale(0.5); }
+	50% { opacity: 1; transform: scale(1.2); }
+	100% { opacity: 0; transform: scale(1.5); }
+}
+
+#paused-indicator {
+	position: absolute; top: 50%; left: 50%;
+	transform: translate(-50%, -50%);
+	font-family: var(--font-brush);
+	font-size: 80px; color: #fff;
+	text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+	/* Removed box border for more organic look */
+	padding: 20px; 
+	display: none; pointer-events: none;
+	font-weight: 400; letter-spacing: 2px; z-index: 40;
+}

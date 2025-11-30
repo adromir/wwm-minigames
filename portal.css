@@ -1,0 +1,269 @@
+/* * Wuxia Portal Theme
+ * Author: Adromir
+ */
+:root {
+	--paper-light: #f3e5d0;
+	--paper-dark: #e0d2bc;
+	--ink-main: #1a1a1a;
+	--ink-light: #4a4a4a;
+	--cinnabar: #a83f39;
+	--jade: #4db6ac;
+	--gold: #d4af37;
+	
+	--font-title: 'Long Cang', cursive;
+	--font-body: 'Noto Serif SC', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+	background-color: var(--paper-light);
+	color: var(--ink-main);
+	font-family: var(--font-body);
+	overflow-x: hidden;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* Background Texture */
+.bg-texture {
+	position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+	background-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.08"/></svg>');
+	pointer-events: none;
+	z-index: -1;
+}
+
+.main-container {
+	width: 100%;
+	max-width: 1200px;
+	padding: 40px 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* Header */
+header {
+	text-align: center;
+	margin-bottom: 60px;
+	position: relative;
+	padding-top: 20px;
+}
+
+.logo-stamp {
+	position: absolute;
+	top: 0; right: -40px;
+	border: 3px solid var(--cinnabar);
+	color: var(--cinnabar);
+	padding: 5px 10px;
+	font-family: var(--font-body);
+	font-weight: bold;
+	font-size: 14px;
+	transform: rotate(-15deg);
+	opacity: 0.8;
+	border-radius: 4px;
+}
+
+header h1 {
+	font-family: var(--font-title);
+	font-size: 80px;
+	line-height: 1;
+	color: var(--ink-main);
+	text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+	margin-bottom: 10px;
+}
+
+.subtitle {
+	font-size: 20px;
+	color: var(--ink-light);
+	font-style: italic;
+	letter-spacing: 2px;
+}
+
+.divider {
+	width: 100px;
+	height: 3px;
+	background: var(--cinnabar);
+	margin: 20px auto 0;
+	border-radius: 2px;
+}
+
+/* Grid */
+.games-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 40px;
+	width: 100%;
+	justify-content: center;
+}
+
+/* Game Cards */
+.game-card {
+	text-decoration: none;
+	color: inherit;
+	background: transparent;
+	perspective: 1000px;
+	transition: transform 0.3s ease;
+	cursor: pointer;
+}
+
+.game-card:hover {
+	transform: translateY(-5px);
+}
+
+.card-inner {
+	background: #fff;
+	border: 1px solid rgba(0,0,0,0.1);
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+	transition: box-shadow 0.3s ease;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.game-card:hover .card-inner {
+	box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+	border-color: var(--cinnabar);
+}
+
+/* Card Image Area */
+.card-image {
+	height: 200px;
+	background-color: var(--ink-main);
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+/* Abstract Backgrounds for Cards */
+.music-bg {
+	background: linear-gradient(135deg, #2a1b15 0%, #3e2723 100%);
+}
+.music-bg::after {
+	content: '';
+	position: absolute;
+	width: 200%; height: 200%;
+	background: repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 20px);
+	transform: rotate(15deg);
+}
+
+.pot-bg {
+	background: linear-gradient(135deg, #1b3a36 0%, #264d47 100%);
+}
+
+.icon-overlay {
+	font-size: 80px;
+	color: rgba(255,255,255,0.2);
+	font-family: var(--font-title);
+}
+
+/* Content */
+.card-content {
+	padding: 25px;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="none" stroke="%23000" stroke-opacity="0.03" stroke-width="1"/></svg>');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.card-content h2 {
+	font-family: var(--font-title);
+	font-size: 32px;
+	margin-bottom: 5px;
+}
+
+.chinese-title {
+	display: block;
+	font-family: var(--font-body);
+	color: var(--cinnabar);
+	font-weight: bold;
+	margin-bottom: 15px;
+	font-size: 18px;
+	letter-spacing: 2px;
+}
+
+.card-content p {
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--ink-light);
+	margin-bottom: 20px;
+	flex-grow: 1;
+}
+
+.card-footer {
+	margin-top: auto;
+	border-top: 1px solid rgba(0,0,0,0.05);
+	padding-top: 15px;
+}
+
+.status {
+	display: inline-block;
+	padding: 5px 15px;
+	border-radius: 20px;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: bold;
+}
+
+.status.available {
+	background-color: var(--ink-main);
+	color: #fff;
+}
+
+.game-card:hover .status.available {
+	background-color: var(--cinnabar);
+}
+
+/* Disabled State */
+.game-card.disabled {
+	opacity: 0.7;
+	cursor: default;
+}
+.game-card.disabled:hover {
+	transform: none;
+}
+.game-card.disabled .card-inner {
+	box-shadow: none;
+	border-color: rgba(0,0,0,0.1);
+}
+.status.coming-soon {
+	background-color: #ccc;
+	color: #666;
+	border: 1px solid #999;
+}
+
+/* Footer */
+footer {
+	margin-top: 80px;
+	text-align: center;
+	color: var(--ink-light);
+	font-size: 14px;
+}
+
+.github-link {
+	display: inline-block;
+	margin-top: 10px;
+	color: var(--ink-main);
+	text-decoration: none;
+	border-bottom: 1px solid var(--ink-main);
+	transition: color 0.2s;
+}
+.github-link:hover {
+	color: var(--cinnabar);
+	border-color: var(--cinnabar);
+}
+
+@media (max-width: 600px) {
+	header h1 { font-size: 50px; }
+	.games-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Graceful Melody - Wuxia Rhythm Game</title>
+	<!-- Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+	<!-- Styles -->
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+	<div id="game-wrapper">
+		<div id="game-container">
+			<canvas id="gameCanvas"></canvas>
+			
+			<div id="ui-layer">
+				<div class="header-container">
+					<div class="header">
+						<h1>Graceful Melody</h1>
+					</div>
+					<div class="score-board">Score: <span id="score">0</span></div>
+					<div class="progress-container">
+						<div id="progress-bar" class="progress-fill"></div>
+					</div>
+				</div>
+				
+				<!-- In-Game Controls (Jade Tablets at Bottom Right) -->
+				<div class="controls hidden" id="game-controls">
+					<div class="control-panel">
+						<button id="pause-btn" class="control-jade" title="Pause Game (Space)">
+							<span class="c-icon">❚❚</span>
+							<span class="c-label">Pause</span>
+						</button>
+						<button id="restart-game-btn" class="control-jade" title="Restart Song (R)">
+							<span class="c-icon">↻</span>
+							<span class="c-label">Restart</span>
+						</button>
+						<button id="quit-btn" class="control-jade" title="Quit to Menu (Q)">
+							<span class="c-icon">✕</span>
+							<span class="c-label">Quit</span>
+						</button>
+					</div>
+				</div>
+
+				<div id="combo-display"></div>
+				<div id="feedback-text"></div>
+				<div id="paused-indicator">PAUSED</div>
+				
+				<div id="countdown-overlay" class="hidden">
+					<div id="countdown-text">3</div>
+				</div>
+			</div>
+
+			<!-- Start Screen / Song Selection -->
+			<div id="start-screen">
+				<h1 class="screen-title">Graceful Melody</h1>
+				<p class="screen-subtitle">A Wuxia Rhythm Experience</p>
+				
+				<div id="song-select-section">
+					<p class="instructions" style="border:none; margin-top:10px;">Select a Song</p>
+					<div class="song-container" id="song-list">
+						<!-- Populated via JS -->
+					</div>
+				</div>
+
+				<div id="difficulty-select-section" class="hidden">
+					<p class="instructions" style="border:none; margin-top:10px;">Select Mastery Level</p>
+					<div class="difficulty-container">
+						<button class="diff-btn novice" data-diff="novice">
+							<strong>Novice</strong><br><span>Easy</span>
+						</button>
+						<button class="diff-btn disciple" data-diff="disciple">
+							<strong>Disciple</strong><br><span>Normal</span>
+						</button>
+						<button class="diff-btn master" data-diff="master">
+							<strong>Master</strong><br><span>Hard</span>
+						</button>
+						<button class="diff-btn grandmaster" data-diff="grandmaster">
+							<strong>Grand</strong><br><span>Expert</span>
+						</button>
+					</div>
+					<div style="margin-top:20px;">
+						<button class="control-jade dark" id="back-to-songs">Back</button>
+					</div>
+				</div>
+
+				<div class="instructions" style="margin-top:20px;">
+					Controls: <b>S, D, F</b> (Left) &nbsp;|&nbsp; <b>J, K, L</b> (Right)<br>
+					<i>Hold the key to channel energy for long notes.</i>
+				</div>
+			</div>
+
+			<!-- Game Over Screen -->
+			<div id="game-over-screen" class="hidden">
+				<h1>Evaluation</h1>
+				
+				<p id="rank-text">Divine Harmony</p>
+
+				<div class="result-board">
+					<div class="stat-row">
+						<span class="stat-label">Song</span>
+						<span class="stat-value" id="final-song" style="color:var(--ink-dark)"></span>
+					</div>
+					<div class="stat-row">
+						<span class="stat-label">Difficulty</span>
+						<span class="stat-value" id="final-diff" style="color:var(--cinnabar)"></span>
+					</div>
+					<div class="stat-row">
+						<span class="stat-label">Perfect</span>
+						<span class="stat-value" id="stat-perfect">0</span>
+					</div>
+					<div class="stat-row">
+						<span class="stat-label">Good</span>
+						<span class="stat-value" id="stat-good">0</span>
+					</div>
+					<div class="stat-row">
+						<span class="stat-label">Miss</span>
+						<span class="stat-value" id="stat-miss">0</span>
+					</div>
+					<div class="stat-row">
+						<span class="stat-label">Max Combo</span>
+						<span class="stat-value" id="max-combo">0</span>
+					</div>
+					<div class="stat-row total">
+						<span class="stat-label" style="align-self:center;">Total Score</span>
+						<span class="stat-value" id="final-score">0</span>
+					</div>
+					<div class="stat-row" style="border:none; padding-top:10px;">
+						<span class="stat-label">Highscore</span>
+						<div style="text-align:right;">
+							<span class="stat-value" id="final-highscore">0</span>
+							<span id="new-record-msg" class="highscore-notice"></span>
+						</div>
+					</div>
+				</div>
+				
+				<div style="display:flex; gap:20px;">
+					<button id="restart-btn" class="diff-btn disciple" style="height:100px; width:140px; border-radius:4px; border-style:solid;"><strong>Replay</strong></button>
+					<button id="menu-btn" class="diff-btn novice" style="height:100px; width:140px; border-radius:4px; border-style:solid;"><strong>Menu</strong></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="songs.js"></script>
+	<script src="game.js"></script>
+</body>
+</html>
