@@ -30,8 +30,15 @@ A rhythm game played on a virtual *Guqin*. Cultivate your inner harmony by strik
 
 ### 2. 🏹 Pitch Pot / Touhu (投壶)
 
-* **Status:** 🚧 *In Development*
+* **Status:** ✨ Playable
 * **Description:** A traditional game of precision and patience. Throw arrows into the pot to prove your martial focus without drawing a blade.
+* **Mechanics:** Charge your throw with `Spacebar` and release at the perfect power level. Aim for the "Golden Mean"!
+
+### 3. 🐎 Wild Horse Taming (驯马)
+
+* **Status:** ✨ Playable
+* **Description:** A test of spirit and reflexes. Prove your worthiness to a wild steed by matching its movements in the ring of fire.
+* **Mechanics:** Directional rhythm matching (`W`, `A`, `S`, `D`). Maintain your stamina and fill the taming meter before time runs out.
 
 ---
 
@@ -41,7 +48,8 @@ If you are hosting this yourself, the structure represents the layout of the pav
 
 * `index.html` - **The Grand Entrance** (Portal Page)
 * `/graceful-melody/` - **The Music Chamber** (Rhythm Game)
-* `/pitch-pot/` - **The Archery Range** (Upcoming Game)
+* `/pitch-pot/` - **The Archery Range** (Precision Game)
+* `/horse-taming/` - **The Corral** (Reflex Game)
 
 ---
 

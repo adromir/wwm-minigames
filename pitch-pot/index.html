@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="style.css?v=7">
+<link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Noto+Serif+SC:wght@400;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+    <div id="game-wrapper">
+        <div class="side-panel left-panel">
+            <div class="stats-container">
+                <div class="stat-box">
+                    <span class="stat-label">Combo</span>
+                    <span id="combo-display" class="stat-value">0</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Stage</span>
+                    <span id="stage-display" class="stat-value">1</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="game-container">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+            <div id="ui-layer">
+                <div class="header-container">
+                    <div class="header">
+                        <h1>Pitch Pot</h1>
+                        <div id="score-display">Score: 0</div>
+                    </div>
+                    <div class="timer-container">
+                        <span>Time: </span>
+                        <span id="time-display">60</span>s
+                    </div>
+                </div>
+
+                <div id="message-area"></div>
+            </div>
+
+            <!-- Screens -->
+            <div id="start-screen" class="screen">
+                <h1 class="screen-title">Pitch Pot</h1>
+                <p class="screen-subtitle">The Test of Focus</p>
+
+                <div class="instructions">
+                    <p><b>1. Chase the Pot:</b> Keep your cursor inside the moving pot.</p>
+                    <p><b>2. Charge Up:</b> The circle will fill while you are inside.</p>
+                    <p><b>3. Strike:</b> Click (or press Space) <b>ONLY</b> when fully charged!</p>
+                    <p><b>4. Progress:</b> Complete the objective before time runs out to advance.</p>
+                </div>
+
+                <div class="setting-row">
+                    <label for="round-count" class="gold-text">Rounds:</label>
+                    <select id="round-count" class="main-select">
+                        <option value="3">3 Rounds</option>
+                        <option value="5">5 Rounds</option>
+                        <option value="10">10 Rounds</option>
+                    </select>
+                </div>
+
+                <button id="start-game-btn" class="main-btn">Start Game</button>
+                <button id="back-home-btn" class="main-btn secondary">Back to Hall</button>
+            </div>
+
+            <div id="game-over-screen" class="screen hidden">
+                <h1 class="screen-title">Finished</h1>
+                <div class="result-box">
+                    <div class="stat-row">
+                        <span>Final Score:</span>
+                        <span id="final-score">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Max Combo:</span>
+                        <span id="final-combo">0</span>
+                    </div>
+                </div>
+                <button id="play-again-btn" class="main-btn">Play Again</button>
+                <button id="quit-btn" class="main-btn secondary">Quit</button>
+            </div>
+        </div>
+
+        <div class="side-panel right-panel">
+            <div class="controls">
+                <button id="menu-btn" class="control-btn">Menu</button>
+                <button id="restart-btn" class="control-btn">Restart</button>
+            </div>
+        </div>
+    </div>
+    <script src="game.js?v=7"></script>
+</body>
+
+</html>

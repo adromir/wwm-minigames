@@ -1,0 +1,438 @@
+/* Pitch Pot (Touhu) - Dark Wuxia Style */
+:root {
+    --bg-deep: #051e18;
+    --bg-panel: #0a2e26;
+    --text-main: #e8f5e9;
+    --text-dim: #a5d6a7;
+
+    --gold-main: #c5a059;
+    --gold-glow: #ffd700;
+
+    /* Green Jade Palette */
+    --jade-dark: #1b5e20;
+    --jade-main: #2e7d32;
+    --jade-glow: #66bb6a;
+
+    --cinnabar: #a83f39;
+
+    --font-brush: 'Long Cang', cursive;
+    --font-serif: 'Noto Serif SC', serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-deep);
+    font-family: var(--font-serif);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    user-select: none;
+    background-image: radial-gradient(circle at 50% 30%, #1b5e20 0%, #051e18 80%);
+}
+
+/* Gold Gradient Text Utility */
+.gold-text {
+    background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold-main);
+    transform: translateY(-1px);
+}
+
+#game-wrapper {
+    position: relative;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(10, 46, 38, 0.95) 0%, rgba(5, 30, 24, 0.95) 100%), url('assets/jade_texture.png');
+    background-size: cover;
+    background-blend-mode: overlay;
+    border: 3px solid var(--jade-main);
+    box-shadow:
+        0 0 0 2px #000,
+        0 0 60px rgba(46, 125, 50, 0.4),
+        inset 0 0 50px rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#game-wrapper::before,
+#game-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--gold-glow);
+    transition: all 0.5s ease;
+    box-shadow: 0 0 10px var(--gold-glow);
+    z-index: 10;
+}
+
+#game-wrapper::before {
+    top: -3px;
+    left: -3px;
+    border-right: none;
+    border-bottom: none;
+    border-top-left-radius: 8px;
+}
+
+#game-wrapper::after {
+    bottom: -3px;
+    right: -3px;
+    border-left: none;
+    border-top: none;
+    border-bottom-right-radius: 8px;
+}
+
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    min-width: 120px;
+}
+
+#game-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    /* Texture with radial gradient overlay to keep center bright */
+    background: radial-gradient(circle at center, rgba(14, 61, 50, 0.9) 0%, rgba(5, 30, 24, 0.95) 100%), url('assets/jade_texture.png');
+    background-size: cover;
+    background-blend-mode: overlay;
+    overflow: hidden;
+    border: 1px solid rgba(102, 187, 106, 0.3);
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.header-container {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    z-index: 10;
+}
+
+.header h1 {
+    font-family: var(--font-brush);
+    font-size: 42px;
+    margin: 0;
+    background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+#score-display {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--text-main);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.timer-container {
+    font-size: 32px;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.stats-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stat-box {
+    background: linear-gradient(to bottom, rgba(10, 46, 38, 0.9), rgba(5, 30, 24, 0.95));
+    padding: 15px;
+    border: 1px solid var(--jade-dark);
+    border-left: 4px solid var(--jade-main);
+    border-radius: 4px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.4);
+    min-width: 100px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--jade-glow);
+    display: block;
+    transform: translateY(-1px);
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+#message-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.message-text {
+    font-family: 'Long Cang', cursive;
+    font-size: 64px;
+    background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+    line-height: 1.2;
+}
+
+.message-subtext {
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    margin-top: 5px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+.control-btn {
+    background: linear-gradient(to bottom, rgba(10, 46, 38, 0.95), rgba(5, 30, 24, 1));
+    border: 1px solid var(--jade-main);
+    color: var(--jade-glow);
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: var(--font-serif);
+    font-size: 16px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+.control-btn:hover {
+    background: linear-gradient(to bottom, rgba(20, 60, 50, 0.95), rgba(10, 46, 38, 1));
+    box-shadow: 0 0 15px rgba(102, 187, 106, 0.4);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* Screens */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 30, 24, 0.85);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 30;
+    pointer-events: auto;
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.screen-title {
+    font-family: 'Long Cang', cursive;
+    font-size: 64px;
+    margin: 0 0 5px 0;
+    background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+    line-height: 1.1;
+}
+
+.screen-subtitle {
+    font-size: 20px;
+    color: var(--jade-glow);
+    margin-bottom: 15px;
+    font-style: italic;
+    letter-spacing: 3px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.instructions {
+    background: linear-gradient(to bottom, rgba(10, 46, 38, 0.9), rgba(5, 30, 24, 0.95));
+    padding: 15px 25px;
+    border: 1px solid var(--jade-main);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6), 0 10px 20px rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+    text-align: left;
+    max-width: 500px;
+    color: var(--text-main);
+    border-radius: 4px;
+}
+
+.instructions b {
+    background: linear-gradient(to bottom, #ffd700, #c5a059);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+.instructions p {
+    margin: 5px 0;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.setting-row {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 20px;
+    border-radius: 30px;
+    border: 1px solid var(--jade-dark);
+}
+
+.setting-row label {
+    background: linear-gradient(to bottom, #ffd700, #c5a059);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.main-select {
+    padding: 8px 15px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--gold-main);
+    background: #0a2e26;
+    color: var(--gold-glow);
+    font-family: var(--font-serif);
+    cursor: pointer;
+    outline: none;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.main-btn {
+    font-family: var(--font-brush);
+    font-size: 32px;
+    padding: 8px 50px;
+    background: linear-gradient(to bottom, rgba(10, 46, 38, 0.8), rgba(5, 30, 24, 0.9));
+    color: var(--gold-main);
+    border: 2px solid var(--gold-main);
+    border-radius: 50px;
+    /* Pill shape */
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(197, 160, 89, 0.1);
+    margin: 10px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.main-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.main-btn:hover {
+    background: linear-gradient(to bottom, rgba(20, 60, 50, 0.9), rgba(10, 46, 38, 1));
+    box-shadow: 0 0 25px rgba(197, 160, 89, 0.6);
+    transform: translateY(-3px) scale(1.05);
+    border-color: var(--gold-glow);
+}
+
+.main-btn span {
+    background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+}
+
+.main-btn.secondary {
+    border-color: var(--text-dim);
+    font-size: 24px;
+    padding: 8px 40px;
+    opacity: 0.8;
+}
+
+.main-btn.secondary:hover {
+    opacity: 1;
+    border-color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.result-box {
+    margin-bottom: 40px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px 40px;
+    border-radius: 8px;
+    border: 1px solid var(--jade-dark);
+}
+
+.stat-row {
+    font-size: 28px;
+    margin: 15px 0;
+    color: var(--text-main);
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+}
+
+.stat-row span:last-child {
+    font-weight: bold;
+    color: var(--gold-glow);
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wild Horse Taming</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Noto+Serif+SC:wght@300;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <button id="back-to-hall-btn" onclick="window.location.href='../index.html'">
+        &lt; Back to Hall
+    </button>
+
+    <div id="game-wrapper">
+        <canvas id="game-canvas" width="800" height="600"></canvas>
+
+        <!-- UI Overlay -->
+        <div id="ui-layer">
+            <div id="hud" class="hidden">
+                <div class="bar-container" id="stamina-container">
+                    <span class="label">Stamina</span>
+                    <div class="bar-bg">
+                        <div class="bar-fill" id="stamina-bar"></div>
+                    </div>
+                </div>
+                <div class="bar-container" id="progress-container">
+                    <span class="label">Taming</span>
+                    <div class="bar-bg">
+                        <div class="bar-fill" id="progress-bar"></div>
+                    </div>
+                </div>
+                <div id="combo-display">Combo: <span id="combo-count">0</span></div>
+            </div>
+
+            <!-- Start Screen -->
+            <div id="start-screen" class="screen">
+                <h1 class="title">Wild Horse Taming</h1>
+                <p class="subtitle">Prove your spirit against the beast</p>
+                <div class="instructions">
+                    <p>Use <b>W A S D</b> to match the prompts.</p>
+                    <p>Press the key when the prompt hits the <b>Ring of Fire</b>.</p>
+                    <p>Don't let your <b>Stamina</b> run out!</p>
+                </div>
+                <button id="start-btn" class="btn">Mount Horse</button>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="screen hidden">
+                <h1 id="end-title" class="title">Tamed!</h1>
+                <p id="end-reason" class="subtitle">The horse accepts you as its master.</p>
+                <div class="stats">
+                    <p>Max Combo: <span id="final-combo">0</span></p>
+                    <p>Rank: <span id="final-rank">Unranked</span></p>
+                </div>
+                <button id="restart-btn" class="btn">Try Again</button>
+                <button id="quit-btn" class="btn secondary">Return to Hall</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

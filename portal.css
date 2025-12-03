@@ -1,24 +1,39 @@
-/* * Wuxia Portal Theme
+/* * Wuxia Portal Theme - "Night of the Lanterns"
  * Author: Adromir
  */
+@font-face {
+	font-family: 'HanyiSentyPagoda Regular';
+	src: url('fonts/HanyiSentyPagoda.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
 :root {
-	--paper-light: #f3e5d0;
-	--paper-dark: #e0d2bc;
-	--ink-main: #1a1a1a;
-	--ink-light: #4a4a4a;
+	--bg-deep: #02111b;
+	--bg-panel: #061a23;
+	--text-main: #e0e0e0;
+	--text-dim: #8fa3ad;
+
+	--gold-main: #c5a059;
+	--gold-glow: #ffd700;
+	--jade-main: #4db6ac;
+	--jade-glow: #80cbc4;
+
 	--cinnabar: #a83f39;
-	--jade: #4db6ac;
-	--gold: #d4af37;
-	
-	--font-title: 'Long Cang', cursive;
+
+	--font-title: 'HanyiSentyPagoda', cursive;
 	--font-body: 'Noto Serif SC', serif;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
 
 body {
-	background-color: var(--paper-light);
-	color: var(--ink-main);
+	background-color: var(--bg-deep);
+	color: var(--text-main);
 	font-family: var(--font-body);
 	overflow-x: hidden;
 	min-height: 100vh;
@@ -27,12 +42,28 @@ body {
 	align-items: center;
 }
 
-/* Background Texture */
+/* Background Texture - Deep Blue Night */
 .bg-texture {
-	position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-	background-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.08"/></svg>');
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: radial-gradient(circle at 50% 30%, #0b2d3f 0%, #02111b 80%);
 	pointer-events: none;
 	z-index: -1;
+}
+
+.bg-texture::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="1" fill="white" opacity="0.2"/></svg>');
+	background-size: 200px 200px;
+	opacity: 0.5;
 }
 
 .main-container {
@@ -54,9 +85,10 @@ header {
 
 .logo-stamp {
 	position: absolute;
-	top: 0; right: -40px;
-	border: 3px solid var(--cinnabar);
-	color: var(--cinnabar);
+	top: 0;
+	right: -40px;
+	border: 2px solid var(--gold-main);
+	color: var(--gold-main);
 	padding: 5px 10px;
 	font-family: var(--font-body);
 	font-weight: bold;
@@ -64,30 +96,34 @@ header {
 	transform: rotate(-15deg);
 	opacity: 0.8;
 	border-radius: 4px;
+	box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
 }
 
 header h1 {
-	font-family: var(--font-title);
+	font-family: 'Long Cang', cursive;
 	font-size: 80px;
 	line-height: 1;
-	color: var(--ink-main);
-	text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+	background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 	margin-bottom: 10px;
 }
 
 .subtitle {
 	font-size: 20px;
-	color: var(--ink-light);
+	color: var(--jade-main);
 	font-style: italic;
 	letter-spacing: 2px;
+	text-shadow: 0 0 5px rgba(77, 182, 172, 0.3);
 }
 
 .divider {
 	width: 100px;
-	height: 3px;
-	background: var(--cinnabar);
+	height: 2px;
+	background: linear-gradient(90deg, transparent, var(--gold-main), transparent);
 	margin: 20px auto 0;
-	border-radius: 2px;
 }
 
 /* Grid */
@@ -114,42 +150,46 @@ header h1 {
 }
 
 .card-inner {
-	background: #fff;
-	border: 1px solid rgba(0,0,0,0.1);
-	border-radius: 8px;
+	background: rgba(6, 26, 35, 0.8);
+	border: 1px solid var(--gold-main);
+	border-radius: 4px;
 	overflow: hidden;
-	box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-	transition: box-shadow 0.3s ease;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+	transition: all 0.3s ease;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	position: relative;
 }
 
 .game-card:hover .card-inner {
-	box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-	border-color: var(--cinnabar);
+	box-shadow: 0 0 20px rgba(197, 160, 89, 0.3);
+	border-color: var(--gold-glow);
 }
 
 /* Card Image Area */
 .card-image {
 	height: 200px;
-	background-color: var(--ink-main);
+	background-color: #000;
 	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
+	border-bottom: 1px solid var(--gold-main);
 }
 
 /* Abstract Backgrounds for Cards */
 .music-bg {
-	background: linear-gradient(135deg, #2a1b15 0%, #3e2723 100%);
+	background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
 }
+
 .music-bg::after {
 	content: '';
 	position: absolute;
-	width: 200%; height: 200%;
-	background: repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 20px);
+	width: 200%;
+	height: 200%;
+	background: repeating-linear-gradient(90deg, rgba(77, 182, 172, 0.05) 0px, rgba(77, 182, 172, 0.05) 1px, transparent 1px, transparent 20px);
 	transform: rotate(15deg);
 }
 
@@ -157,9 +197,22 @@ header h1 {
 	background: linear-gradient(135deg, #1b3a36 0%, #264d47 100%);
 }
 
+.horse-bg {
+	background: linear-gradient(135deg, #4a0e0e 0%, #800000 100%);
+}
+
+.horse-bg::after {
+	content: '';
+	position: absolute;
+	width: 200%;
+	height: 200%;
+	background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 60%);
+	transform: translate(-50%, -50%);
+}
+
 .icon-overlay {
 	font-size: 80px;
-	color: rgba(255,255,255,0.2);
+	color: rgba(255, 255, 255, 0.1);
 	font-family: var(--font-title);
 }
 
@@ -170,21 +223,19 @@ header h1 {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-	background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="none" stroke="%23000" stroke-opacity="0.03" stroke-width="1"/></svg>');
-	background-position: center;
-	background-repeat: no-repeat;
 }
 
 .card-content h2 {
 	font-family: var(--font-title);
 	font-size: 32px;
 	margin-bottom: 5px;
+	color: var(--text-main);
 }
 
 .chinese-title {
 	display: block;
 	font-family: var(--font-body);
-	color: var(--cinnabar);
+	color: var(--gold-main);
 	font-weight: bold;
 	margin-bottom: 15px;
 	font-size: 18px;
@@ -194,76 +245,82 @@ header h1 {
 .card-content p {
 	font-size: 14px;
 	line-height: 1.6;
-	color: var(--ink-light);
+	color: var(--text-dim);
 	margin-bottom: 20px;
 	flex-grow: 1;
 }
 
 .card-footer {
 	margin-top: auto;
-	border-top: 1px solid rgba(0,0,0,0.05);
+	border-top: 1px solid rgba(197, 160, 89, 0.2);
 	padding-top: 15px;
 }
 
 .status {
 	display: inline-block;
 	padding: 5px 15px;
+	border: 1px solid var(--jade-main);
 	border-radius: 20px;
 	font-size: 12px;
 	text-transform: uppercase;
 	letter-spacing: 1px;
-	font-weight: bold;
-}
-
-.status.available {
-	background-color: var(--ink-main);
-	color: #fff;
+	color: var(--jade-main);
 }
 
 .game-card:hover .status.available {
-	background-color: var(--cinnabar);
+	background-color: var(--jade-main);
+	color: #02111b;
 }
 
 /* Disabled State */
 .game-card.disabled {
-	opacity: 0.7;
+	opacity: 0.5;
 	cursor: default;
 }
+
 .game-card.disabled:hover {
 	transform: none;
 }
+
 .game-card.disabled .card-inner {
 	box-shadow: none;
-	border-color: rgba(0,0,0,0.1);
+	border-color: #333;
 }
+
 .status.coming-soon {
-	background-color: #ccc;
+	border-color: #666;
 	color: #666;
-	border: 1px solid #999;
 }
 
 /* Footer */
 footer {
 	margin-top: 80px;
 	text-align: center;
-	color: var(--ink-light);
+	color: var(--text-dim);
 	font-size: 14px;
 }
 
 .github-link {
 	display: inline-block;
 	margin-top: 10px;
-	color: var(--ink-main);
+	color: var(--gold-main);
 	text-decoration: none;
-	border-bottom: 1px solid var(--ink-main);
-	transition: color 0.2s;
+	border-bottom: 1px solid var(--gold-main);
+	transition: all 0.2s;
 }
+
 .github-link:hover {
-	color: var(--cinnabar);
-	border-color: var(--cinnabar);
+	color: var(--gold-glow);
+	border-color: var(--gold-glow);
+	text-shadow: 0 0 10px rgba(197, 160, 89, 0.5);
 }
 
 @media (max-width: 600px) {
-	header h1 { font-size: 50px; }
-	.games-grid { grid-template-columns: 1fr; }
+	header h1 {
+		font-size: 50px;
+	}
+
+	.games-grid {
+		grid-template-columns: 1fr;
+	}
 }

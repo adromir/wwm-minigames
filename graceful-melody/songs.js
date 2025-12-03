@@ -10,7 +10,8 @@ const SONG_DATA = {
 			"subtitle": "Jasmine Flower",
 			"description": "A gentle and elegant folk melody.",
 			"duration": 90,
-			"difficulty_multiplier": 1.0,
+			"difficulty": "Disciple",
+			"speed": 4.5,
 			"backing": [
 				// Simple harmonic bed (C-G, A-E patterns)
 				{ "t": 0, "chord": [0, 3] }, { "t": 4000, "chord": [0, 2, 4] },
@@ -56,7 +57,8 @@ const SONG_DATA = {
 			"subtitle": "Jiang Jun Ling",
 			"description": "A forceful, rhythmic martial tune.",
 			"duration": 90,
-			"difficulty_multiplier": 1.2,
+			"difficulty": "Grandmaster",
+			"speed": 8,
 			"backing": [
 				{ "t": 0, "chord": [0, 0, 3] }, { "t": 2000, "chord": [0, 3] },
 				{ "t": 4000, "chord": [3, 5] }, { "t": 6000, "chord": [0, 2] },
@@ -89,7 +91,8 @@ const SONG_DATA = {
 			"subtitle": "High Mountain Flowing Water",
 			"description": "Legendary zither piece about friendship and nature.",
 			"duration": 90,
-			"difficulty_multiplier": 1.1,
+			"difficulty": "Master",
+			"speed": 6,
 			"backing": [
 				{ "t": 500, "chord": [0, 4] }, { "t": 4500, "chord": [1, 5] },
 				{ "t": 8500, "chord": [0, 2, 4] }, { "t": 12500, "chord": [1, 3, 5] },
@@ -116,7 +119,8 @@ const SONG_DATA = {
 			"subtitle": "Wild Geese on Sandbank",
 			"description": "Atmospheric melody with long resonating notes.",
 			"duration": 90,
-			"difficulty_multiplier": 0.9,
+			"difficulty": "Novice",
+			"speed": 3,
 			"backing": [
 				{ "t": 0, "chord": [0, 4] }, { "t": 6000, "chord": [1, 5] },
 				{ "t": 12000, "chord": [2, 4] }, { "t": 18000, "chord": [0, 3] },
@@ -134,6 +138,135 @@ const SONG_DATA = {
 				{ "t": 13000, "l": 0, "type": "hold", "len": 1000 }, { "t": 15000, "l": 2, "type": "tap" },
 				{ "t": 15300, "l": 3, "type": "tap" }, { "t": 15600, "l": 4, "type": "tap" },
 				{ "t": 16000, "l": 5, "type": "hold", "len": 600 }
+			]
+		},
+		{
+			"id": "pinghu",
+			"title": "Ping Hu Qiu Yue",
+			"subtitle": "Autumn Moon over the Calm Lake",
+			"description": "A serene melody depicting the beauty of the West Lake.",
+			"duration": 90,
+			"difficulty": "Disciple",
+			"speed": 4.5,
+			"backing": [
+				{ "t": 0, "chord": [0, 2, 4] }, { "t": 4000, "chord": [1, 3, 5] },
+				{ "t": 8000, "chord": [0, 3] }, { "t": 12000, "chord": [2, 4] },
+				{ "t": 16000, "chord": [0, 2, 5] }, { "t": 20000, "chord": [1, 4] },
+				{ "t": 24000, "chord": [0, 3] }, { "t": 28000, "chord": [2, 5] }
+			],
+			"notes": [
+				{ "t": 1000, "l": 4, "type": "tap" }, { "t": 1500, "l": 3, "type": "tap" }, { "t": 2000, "l": 2, "type": "tap" },
+				{ "t": 2500, "l": 4, "type": "hold", "len": 500 }, { "t": 3500, "l": 5, "type": "tap" },
+				{ "t": 4000, "l": 3, "type": "tap" }, { "t": 4500, "l": 1, "type": "tap" }, { "t": 5000, "l": 2, "type": "hold", "len": 600 },
+				{ "t": 6000, "l": 0, "type": "tap" }, { "t": 6500, "l": 2, "type": "tap" }, { "t": 7000, "l": 4, "type": "tap" },
+				{ "t": 7500, "l": 5, "type": "tap" }, { "t": 8000, "l": 3, "type": "hold", "len": 400 },
+				{ "t": 9000, "l": 1, "type": "tap" }, { "t": 9500, "l": 2, "type": "tap" }, { "t": 10000, "l": 0, "type": "tap" },
+				{ "t": 10500, "l": 2, "type": "hold", "len": 800 },
+				{ "t": 12000, "l": 3, "type": "tap" }, { "t": 12500, "l": 4, "type": "tap" }, { "t": 13000, "l": 5, "type": "tap" },
+				{ "t": 13500, "l": 4, "type": "tap" }, { "t": 14000, "l": 2, "type": "tap" }, { "t": 14500, "l": 1, "type": "hold", "len": 500 }
+			]
+		},
+		{
+			"id": "zizhu",
+			"title": "Zi Zhu Diao",
+			"subtitle": "Purple Bamboo Melody",
+			"description": "A lively and popular folk tune from the Jiangnan region.",
+			"duration": 90,
+			"difficulty": "Novice",
+			"speed": 3,
+			"backing": [
+				{ "t": 0, "chord": [0, 3] }, { "t": 3000, "chord": [1, 4] },
+				{ "t": 6000, "chord": [2, 5] }, { "t": 9000, "chord": [0, 3] },
+				{ "t": 12000, "chord": [1, 4] }, { "t": 15000, "chord": [0, 2] },
+				{ "t": 18000, "chord": [3, 5] }, { "t": 21000, "chord": [1, 3] }
+			],
+			"notes": [
+				{ "t": 500, "l": 2, "type": "tap" }, { "t": 1000, "l": 2, "type": "tap" }, { "t": 1500, "l": 4, "type": "tap" },
+				{ "t": 2000, "l": 4, "type": "tap" }, { "t": 2500, "l": 3, "type": "tap" }, { "t": 3000, "l": 1, "type": "tap" },
+				{ "t": 3500, "l": 2, "type": "hold", "len": 400 },
+				{ "t": 4500, "l": 0, "type": "tap" }, { "t": 5000, "l": 2, "type": "tap" }, { "t": 5500, "l": 1, "type": "tap" },
+				{ "t": 6000, "l": 3, "type": "tap" }, { "t": 6500, "l": 2, "type": "hold", "len": 300 },
+				{ "t": 7500, "l": 4, "type": "tap" }, { "t": 8000, "l": 5, "type": "tap" }, { "t": 8500, "l": 4, "type": "tap" },
+				{ "t": 9000, "l": 2, "type": "tap" }, { "t": 9500, "l": 3, "type": "hold", "len": 500 },
+				{ "t": 10500, "l": 1, "type": "tap" }, { "t": 11000, "l": 0, "type": "tap" }, { "t": 11500, "l": 2, "type": "tap" },
+				{ "t": 12000, "l": 4, "type": "tap" }, { "t": 12500, "l": 3, "type": "hold", "len": 600 }
+			]
+		},
+		{
+			"id": "guangling",
+			"title": "Guangling San",
+			"subtitle": "Guangling Melody",
+			"description": "A famous qin piece with a martial spirit.",
+			"duration": 130,
+			"difficulty": "Grandmaster",
+			"speed": 8,
+			"backing": [
+				{ "t": 0, "chord": [0, 0, 3] }, { "t": 4000, "chord": [1, 4] },
+				{ "t": 8000, "chord": [2, 5] }, { "t": 12000, "chord": [0, 3] },
+				{ "t": 16000, "chord": [1, 4, 5] }, { "t": 20000, "chord": [0, 2] },
+				{ "t": 24000, "chord": [3, 5] }, { "t": 28000, "chord": [1, 3] },
+				{ "t": 32000, "chord": [0, 4] }, { "t": 36000, "chord": [2, 5] }
+			],
+			"notes": [
+				{ "t": 1000, "l": 0, "type": "tap" }, { "t": 1200, "l": 1, "type": "tap" }, { "t": 1400, "l": 0, "type": "tap" },
+				{ "t": 2000, "l": 3, "type": "hold", "len": 400 }, { "t": 3000, "l": 5, "type": "tap" },
+				{ "t": 3200, "l": 4, "type": "tap" }, { "t": 3400, "l": 5, "type": "tap" }, { "t": 4000, "l": 2, "type": "hold", "len": 500 },
+				{ "t": 5000, "l": 1, "type": "tap" }, { "t": 5200, "l": 2, "type": "tap" }, { "t": 5400, "l": 3, "type": "tap" },
+				{ "t": 5600, "l": 4, "type": "tap" }, { "t": 6000, "l": 5, "type": "hold", "len": 600 },
+				{ "t": 7000, "l": 0, "type": "tap" }, { "t": 7500, "l": 0, "type": "tap" }, { "t": 8000, "l": 1, "type": "tap" },
+				{ "t": 8500, "l": 2, "type": "hold", "len": 400 }, { "t": 9500, "l": 3, "type": "tap" },
+				{ "t": 10000, "l": 4, "type": "tap" }, { "t": 10500, "l": 5, "type": "tap" }, { "t": 11000, "l": 4, "type": "hold", "len": 500 },
+				{ "t": 12000, "l": 2, "type": "tap" }, { "t": 12200, "l": 3, "type": "tap" }, { "t": 12400, "l": 1, "type": "tap" },
+				{ "t": 13000, "l": 0, "type": "hold", "len": 800 }
+			]
+		},
+		{
+			"id": "meihua",
+			"title": "Mei Hua San Nong",
+			"subtitle": "Plum Blossom Three Variations",
+			"description": "A classic melody depicting the resilience of plum blossoms.",
+			"duration": 140,
+			"difficulty": "Master",
+			"speed": 6,
+			"backing": [
+				{ "t": 0, "chord": [0, 4] }, { "t": 5000, "chord": [1, 5] },
+				{ "t": 10000, "chord": [2, 4] }, { "t": 15000, "chord": [0, 3] },
+				{ "t": 20000, "chord": [1, 3, 5] }, { "t": 25000, "chord": [0, 2, 4] },
+				{ "t": 30000, "chord": [1, 4] }, { "t": 35000, "chord": [0, 3] }
+			],
+			"notes": [
+				{ "t": 1000, "l": 5, "type": "tap" }, { "t": 1500, "l": 4, "type": "tap" }, { "t": 2000, "l": 5, "type": "tap" },
+				{ "t": 2500, "l": 3, "type": "hold", "len": 600 }, { "t": 3500, "l": 2, "type": "tap" },
+				{ "t": 4000, "l": 1, "type": "tap" }, { "t": 4500, "l": 2, "type": "tap" }, { "t": 5000, "l": 0, "type": "hold", "len": 500 },
+				{ "t": 6000, "l": 3, "type": "tap" }, { "t": 6500, "l": 4, "type": "tap" }, { "t": 7000, "l": 5, "type": "tap" },
+				{ "t": 7500, "l": 3, "type": "hold", "len": 400 }, { "t": 8500, "l": 1, "type": "tap" },
+				{ "t": 9000, "l": 2, "type": "tap" }, { "t": 9500, "l": 0, "type": "tap" }, { "t": 10000, "l": 2, "type": "hold", "len": 700 },
+				{ "t": 11500, "l": 4, "type": "tap" }, { "t": 12000, "l": 5, "type": "tap" }, { "t": 12500, "l": 3, "type": "tap" },
+				{ "t": 13000, "l": 1, "type": "hold", "len": 600 }
+			]
+		},
+		{
+			"id": "yangchun",
+			"title": "Yang Chun Bai Xue",
+			"subtitle": "White Snow in Early Spring",
+			"description": "A lively and elegant piece.",
+			"duration": 120,
+			"difficulty": "Grandmaster",
+			"speed": 8,
+			"backing": [
+				{ "t": 0, "chord": [0, 2, 4] }, { "t": 3000, "chord": [1, 3, 5] },
+				{ "t": 6000, "chord": [0, 3] }, { "t": 9000, "chord": [2, 4] },
+				{ "t": 12000, "chord": [0, 2, 5] }, { "t": 15000, "chord": [1, 4] },
+				{ "t": 18000, "chord": [0, 3] }, { "t": 21000, "chord": [2, 5] }
+			],
+			"notes": [
+				{ "t": 500, "l": 0, "type": "tap" }, { "t": 800, "l": 1, "type": "tap" }, { "t": 1100, "l": 2, "type": "tap" },
+				{ "t": 1400, "l": 3, "type": "tap" }, { "t": 1700, "l": 4, "type": "tap" }, { "t": 2000, "l": 5, "type": "tap" },
+				{ "t": 2500, "l": 3, "type": "hold", "len": 400 }, { "t": 3500, "l": 2, "type": "tap" },
+				{ "t": 3800, "l": 1, "type": "tap" }, { "t": 4100, "l": 0, "type": "tap" }, { "t": 4500, "l": 2, "type": "hold", "len": 500 },
+				{ "t": 5500, "l": 4, "type": "tap" }, { "t": 5800, "l": 5, "type": "tap" }, { "t": 6100, "l": 3, "type": "tap" },
+				{ "t": 6500, "l": 1, "type": "hold", "len": 600 }, { "t": 7500, "l": 0, "type": "tap" },
+				{ "t": 8000, "l": 2, "type": "tap" }, { "t": 8500, "l": 4, "type": "tap" }, { "t": 9000, "l": 5, "type": "hold", "len": 400 }
 			]
 		}
 	]

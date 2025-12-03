@@ -1,0 +1,370 @@
+/* Horse Taming - Fiery Wuxia Theme */
+:root {
+    --bg-deep: #050000;
+    --bg-panel: #1a0505;
+    --red-main: #ff3300;
+    --red-dim: #800000;
+    --red-glow: #ff4500;
+    --gold-main: #ffd700;
+    --gold-dim: #b8860b;
+    --gold-light: #ffec8b;
+    --text-light: #fff0e6;
+
+    --font-title: 'Long Cang', cursive;
+    --font-body: 'Noto Serif SC', serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-deep);
+    font-family: var(--font-body);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: var(--text-light);
+    background: radial-gradient(circle at center, #2a0a0a 0%, #000000 100%);
+}
+
+/* Outer Decorative Frame */
+#game-wrapper {
+    position: relative;
+    padding: 20px;
+    /* Space for the frame */
+    background: radial-gradient(circle at center, #200505 0%, #000000 90%);
+    border: 3px solid var(--red-dim);
+    box-shadow:
+        0 0 0 2px #000,
+        /* Inner black border */
+        0 0 60px rgba(255, 51, 0, 0.3),
+        /* Large glow */
+        inset 0 0 50px rgba(0, 0, 0, 0.8);
+    /* Inner vignette */
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Decorative Frame Corners */
+#game-wrapper::before,
+#game-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--gold-main);
+    transition: all 0.5s ease;
+    box-shadow: 0 0 15px var(--red-main);
+    z-index: 20;
+    pointer-events: none;
+}
+
+#game-wrapper::before {
+    top: -6px;
+    left: -6px;
+    border-right: none;
+    border-bottom: none;
+    border-top-left-radius: 12px;
+}
+
+#game-wrapper::after {
+    bottom: -6px;
+    right: -6px;
+    border-left: none;
+    border-top: none;
+    border-bottom-right-radius: 12px;
+}
+
+/* Inner Game Container */
+#game-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    background: #000;
+    /* Fallback */
+    /* Deep fiery background for the game area itself */
+    background: radial-gradient(circle at center, #2a0a0a 0%, #000000 100%);
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 51, 0, 0.2);
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Vignette effect */
+    background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* HUD */
+#hud {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    right: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 5;
+}
+
+.bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 260px;
+}
+
+.label {
+    font-family: var(--font-title);
+    font-size: 28px;
+    background: linear-gradient(to bottom, var(--gold-main), var(--gold-dim));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.8));
+    letter-spacing: 1px;
+}
+
+.bar-bg {
+    height: 18px;
+    background: rgba(20, 0, 0, 0.9);
+    border: 1px solid var(--red-dim);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.bar-fill {
+    height: 100%;
+    width: 100%;
+    transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+/* Add a "shine" to the bars */
+.bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+}
+
+#stamina-bar {
+    background: linear-gradient(90deg, #ff9900, #ff3300);
+    box-shadow: 0 0 15px rgba(255, 51, 0, 0.4);
+}
+
+#progress-bar {
+    background: linear-gradient(90deg, #00ccff, #0066ff);
+    box-shadow: 0 0 15px rgba(0, 102, 255, 0.4);
+    width: 0%;
+}
+
+#combo-display {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-title);
+    font-size: 56px;
+    background: linear-gradient(to bottom, #ffd700, #ff8800);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(255, 51, 0, 0.6));
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.1s;
+    z-index: 5;
+}
+
+/* Screens */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto;
+    z-index: 10;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.title {
+    font-family: var(--font-title);
+    font-size: 96px;
+    margin: 0;
+    background: linear-gradient(to bottom, #ffd700, #ff3300, #800000);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
+    line-height: 1.1;
+}
+
+.subtitle {
+    font-size: 24px;
+    color: var(--gold-light);
+    margin-bottom: 40px;
+    font-style: italic;
+    opacity: 0.9;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    letter-spacing: 2px;
+}
+
+.instructions {
+    background: linear-gradient(to bottom, rgba(30, 0, 0, 0.9), rgba(10, 0, 0, 0.95));
+    border: 1px solid var(--red-dim);
+    padding: 25px 40px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    text-align: center;
+    box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.8),
+        0 10px 20px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+}
+
+.instructions p {
+    margin: 12px 0;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-light);
+}
+
+.instructions b {
+    color: var(--gold-main);
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+.btn {
+    font-family: var(--font-title);
+    font-size: 36px;
+    padding: 12px 60px;
+    background: linear-gradient(to bottom, #800000, #400000);
+    border: 2px solid var(--red-main);
+    border-radius: 50px;
+    color: var(--gold-main);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.5),
+        inset 0 0 10px rgba(255, 51, 0, 0.2);
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.btn:hover {
+    background: linear-gradient(to bottom, #a00000, #600000);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow:
+        0 0 25px rgba(255, 51, 0, 0.6),
+        inset 0 0 15px rgba(255, 51, 0, 0.3);
+    color: #fff;
+    border-color: var(--gold-main);
+}
+
+.btn:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.btn.secondary {
+    margin-top: 20px;
+    font-size: 24px;
+    background: transparent;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold-dim);
+    box-shadow: none;
+    padding: 8px 40px;
+}
+
+.btn.secondary:hover {
+    border-color: var(--gold-main);
+    color: var(--gold-main);
+    background: rgba(255, 215, 0, 0.05);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.stats {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 22px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px 30px;
+    border-radius: 8px;
+    border: 1px solid var(--red-dim);
+}
+
+.stats span {
+    background: linear-gradient(to bottom, #ffd700, #ff8800);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    font-size: 28px;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+}
+
+#back-to-hall-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    font-family: var(--font-body);
+    font-size: 16px;
+    padding: 10px 20px;
+    background: rgba(20, 0, 0, 0.9);
+    border: 1px solid var(--red-dim);
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#back-to-hall-btn:hover {
+    border-color: var(--gold-main);
+    color: var(--gold-main);
+    box-shadow: 0 0 15px rgba(255, 51, 0, 0.4);
+    background: rgba(40, 0, 0, 0.95);
+}
