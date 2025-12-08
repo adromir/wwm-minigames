@@ -1,12 +1,6 @@
 /* * Wuxia Portal Theme - "Night of the Lanterns"
  * Author: Adromir
  */
-@font-face {
-	font-family: 'HanyiSentyPagoda Regular';
-	src: url('fonts/HanyiSentyPagoda.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
 
 :root {
 	--bg-deep: #02111b;
@@ -21,7 +15,7 @@
 
 	--cinnabar: #a83f39;
 
-	--font-title: 'HanyiSentyPagoda', cursive;
+	--font-title: 'Ma Shan Zheng', cursive;
 	--font-body: 'Noto Serif SC', serif;
 }
 
@@ -68,7 +62,8 @@ body {
 
 .main-container {
 	width: 100%;
-	max-width: 1200px;
+	max-width: 1400px;
+	/* Wider to fit 4 cards */
 	padding: 40px 20px;
 	display: flex;
 	flex-direction: column;
@@ -78,9 +73,23 @@ body {
 /* Header */
 header {
 	text-align: center;
-	margin-bottom: 60px;
+	margin-bottom: 40px;
+	/* Reduced margin */
 	position: relative;
 	padding-top: 20px;
+}
+
+/* ... */
+
+/* Grid */
+.games-grid {
+	display: grid;
+	/* Fit 4 items: min 250px * 4 = 1000px. With gap 20px*3=60. Total ~1060px. 1400px fits easily. */
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 20px;
+	/* Tighten gap */
+	width: 100%;
+	justify-content: center;
 }
 
 .logo-stamp {
@@ -100,7 +109,7 @@ header {
 }
 
 header h1 {
-	font-family: 'Long Cang', cursive;
+	font-family: var(--font-title);
 	font-size: 80px;
 	line-height: 1;
 	background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
@@ -108,7 +117,7 @@ header h1 {
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-	margin-bottom: 10px;
+	margin-bottom: 30px;
 }
 
 .subtitle {
@@ -129,8 +138,8 @@ header h1 {
 /* Grid */
 .games-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	gap: 40px;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 20px;
 	width: 100%;
 	justify-content: center;
 }
@@ -169,7 +178,8 @@ header h1 {
 
 /* Card Image Area */
 .card-image {
-	height: 200px;
+	height: 140px;
+	/* Smaller image Height */
 	background-color: #000;
 	position: relative;
 	display: flex;
@@ -208,6 +218,31 @@ header h1 {
 	height: 200%;
 	background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 60%);
 	transform: translate(-50%, -50%);
+}
+
+.fishing-bg {
+	background: linear-gradient(135deg, #003a55 0%, #00607a 100%);
+}
+
+.archery-bg {
+	background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
+}
+
+.archery-bg::after {
+	content: '';
+	position: absolute;
+	width: 200%;
+	height: 200%;
+	background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+	transform: translate(-50%, -50%);
+}
+
+.fishing-bg::after {
+	content: '';
+	position: absolute;
+	width: 200%;
+	height: 200%;
+	background: repeating-linear-gradient(45deg, rgba(127, 255, 212, 0.05) 0px, rgba(127, 255, 212, 0.05) 2px, transparent 2px, transparent 10px);
 }
 
 .icon-overlay {

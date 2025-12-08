@@ -15,7 +15,7 @@
 
     --cinnabar: #a83f39;
 
-    --font-brush: 'Long Cang', cursive;
+    --font-brush: 'Ma Shan Zheng', cursive;
     --font-serif: 'Noto Serif SC', serif;
 }
 
@@ -207,7 +207,7 @@ canvas {
 }
 
 .message-text {
-    font-family: 'Long Cang', cursive;
+    font-family: var(--font-brush);
     font-size: 64px;
     background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);
     -webkit-background-clip: text;
@@ -254,6 +254,29 @@ canvas {
     transform: translateY(-1px);
 }
 
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    font-size: 16px;
+    padding: 5px 15px;
+    text-decoration: none;
+    color: var(--text-dim);
+    border: 1px solid var(--jade-main);
+    border-radius: 4px;
+    font-family: var(--font-serif);
+    background: rgba(0, 0, 0, 0.5);
+    transition: all 0.3s;
+    pointer-events: auto;
+}
+
+.back-btn:hover {
+    background: var(--jade-main);
+    color: #fff;
+    box-shadow: 0 0 10px var(--jade-glow);
+}
+
 /* Screens */
 .screen {
     position: absolute;
@@ -277,7 +300,7 @@ canvas {
 }
 
 .screen-title {
-    font-family: 'Long Cang', cursive;
+    font-family: var(--font-brush);
     font-size: 64px;
     margin: 0 0 5px 0;
     background: linear-gradient(to bottom, #ffd700, #fdb931, #c5a059, #b8860b);

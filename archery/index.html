@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archery - Pavilion of Leisure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../portal.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <!-- Background Image Generation 5.0 -->
+        <div class="bg-layer" style="
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('assets/bg.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            filter: sepia(0.2) contrast(1.1); /* Subtle integration filters */
+        "></div>
+
+        <!-- Game Area (SVG) - Overlay for Interactive Elements Only -->
+        <svg id="game-world" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"
+            style="position: relative; z-index: 1;">
+
+            <defs>
+                <!-- Retain paper grain for overlay unification if needed -->
+                <filter id="paper-grain">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
+                    <feColorMatrix type="matrix" values="0 0 0 0 0.95 0 0 0 0 0.9 0 0 0 0 0.85 0 0 0 0.4 0" />
+                </filter>
+            </defs>
+
+            <!-- Birds Layer -->
+            <g id="birds-layer"></g>
+
+        </svg>
+
+        <!-- UI Overlay -->
+        <div class="ui-layer">
+            <div class="top-bar">
+                <div class="score-box">
+                    <div class="label">Score</div>
+                    <div class="value" id="score-display">0</div>
+                </div>
+                <div class="title-display">
+                    <h1>Archery</h1>
+                    <span class="chinese">射艺</span>
+                </div>
+                <div class="timer-box">
+                    <div class="label">Time</div>
+                    <div class="value" id="time-display">60</div>
+                </div>
+            </div>
+
+            <!-- Ability Indicator -->
+            <div class="ability-container">
+                <div class="ability-icon" id="ability-icon">
+                    <div class="key-hint">1</div>
+                    <span class="icon">👁️</span>
+                    <svg class="cooldown-ring" width="60" height="60">
+                        <circle class="ring-bg" cx="30" cy="30" r="28"></circle>
+                        <circle class="ring-progress" id="cooldown-circle" cx="30" cy="30" r="28"></circle>
+                    </svg>
+                </div>
+                <div class="ability-label">Focus (Slow Mo)</div>
+            </div>
+
+            <!-- Start Screen -->
+            <div id="start-screen" class="overlay-screen">
+                <h2>Ready Your Bow</h2>
+                <p>Click birds to shoot. Press '1' for Focus.</p>
+                <button id="start-btn" class="action-btn">Start Game</button>
+                <a href="../index.html" class="back-link">Return to Pavilion</a>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="overlay-screen hidden">
+                <h2>Time's Up</h2>
+                <div class="final-score">Score: <span id="final-score">0</span></div>
+                <button id="restart-btn" class="action-btn">Shoot Again</button>
+                <a href="../index.html" class="back-link">Return to Pavilion</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,304 @@
+/* Archery Minigame Styles */
+
+:root {
+    --paper-bg: #f4e4bc;
+    --ink-black: #1a1a1a;
+    --ink-light: #555;
+    --accent-red: #c0392b;
+    --highlight-gold: #d4af37;
+    --font-primary: 'Noto Serif SC', serif;
+    --font-china: 'Ma Shan Zheng', cursive;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--paper-bg);
+    font-family: var(--font-primary);
+    color: var(--ink-black);
+    user-select: none;
+}
+
+/* Background Texture Effect */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: -1;
+}
+
+.game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* SVG Game World */
+#game-world {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+/* UI Overlay */
+.ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+    /* Let clicks pass through to SVG */
+}
+
+/* Top Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    pointer-events: none;
+}
+
+.title-display {
+    text-align: center;
+}
+
+.title-display h1 {
+    font-family: var(--font-primary);
+    font-size: 2.5rem;
+    margin: 0;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-black);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+.title-display .chinese {
+    display: block;
+    font-family: var(--font-china);
+    font-size: 3rem;
+    color: var(--accent-red);
+    margin-top: -10px;
+    opacity: 0.8;
+}
+
+.score-box,
+.timer-box {
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid var(--ink-black);
+    padding: 1rem 2rem;
+    min-width: 120px;
+    text-align: center;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.label {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-light);
+}
+
+.value {
+    font-family: var(--font-primary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Ability Indicator */
+.ability-container {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+    text-align: center;
+    pointer-events: auto;
+}
+
+.ability-icon {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background: var(--ink-black);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.ability-icon .icon {
+    font-size: 1.5rem;
+    z-index: 2;
+    filter: grayscale(100%) brightness(200%);
+}
+
+.ability-icon.active {
+    box-shadow: 0 0 15px var(--highlight-gold);
+}
+
+.ability-icon.active .icon {
+    filter: none;
+}
+
+.cooldown-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg);
+}
+
+.ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.2);
+    stroke-width: 4;
+}
+
+.ring-progress {
+    fill: none;
+    stroke: var(--highlight-gold);
+    stroke-width: 4;
+    stroke-dasharray: 175.9;
+    /* 2 * PI * r (28) */
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.1s linear;
+}
+
+.key-hint {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: white;
+    border: 1px solid var(--ink-black);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 3;
+}
+
+.ability-label {
+    margin-top: 0.5rem;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* Screens */
+.overlay-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(244, 228, 188, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 100;
+    pointer-events: auto;
+    transition: opacity 0.5s;
+}
+
+.overlay-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.overlay-screen h2 {
+    font-family: var(--font-china);
+    font-size: 5rem;
+    color: var(--ink-black);
+    margin-bottom: 1rem;
+}
+
+.overlay-screen p {
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.action-btn {
+    background: var(--accent-red);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink-black);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.action-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--ink-black);
+}
+
+.action-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink-black);
+}
+
+.back-link {
+    margin-top: 2rem;
+    color: var(--ink-light);
+    text-decoration: none;
+    font-size: 1rem;
+    border-bottom: 1px dashed var(--ink-light);
+}
+
+.back-link:hover {
+    color: var(--ink-black);
+    border-bottom-style: solid;
+}
+
+/* Slow Motion Effect on World */
+.slow-motion #game-world {
+    filter: sepia(0.5) contrast(1.2);
+    transition: filter 0.5s;
+}
+
+/* Score Popup Animation */
+.score-popup {
+    position: absolute;
+    color: var(--accent-red);
+    font-size: 1.5rem;
+    font-weight: bold;
+    pointer-events: none;
+    animation: fadeUp 1s forwards;
+    font-family: var(--font-china);
+}
+
+@keyframes fadeUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+}

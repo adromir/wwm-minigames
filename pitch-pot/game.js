@@ -3,25 +3,17 @@
  * Steady Movement, Stage Progression
  */
 
-const STAGES = [
-    {
-        id: 1,
-        title: "Stage 1",
-        time: 30,
-        pots: [{ type: 'mouse', speed: 100 }] // Slow, Single
-    },
-    {
-        id: 2,
-        title: "Stage 2",
-        time: 25,
-        pots: [{ type: 'mouse', speed: 180 }] // Fast, Single
-    },
-    {
-        id: 3,
-        title: "Stage 3",
-        time: 40,
-        pots: [{ type: 'mouse', speed: 90 }, { type: 'wasd', speed: 80 }] // Dual
-    }
+// Define the 4 stage varieties as requested
+// 1. One Pot, One Pointer (Mouse)
+// 2. One Pot, One Pointer (Keyboard)
+// 3. One Pot, Two Pointers (Hybrid - Both must be inside)
+// 4. Two Pots, Two Pointers (Dual - Corresponding pots, slower)
+
+const STAGE_TYPES = [
+    { type: 'mouse', count: 1, label: 'Mouse Focus' },
+    { type: 'wasd', count: 1, label: 'Keyboard Focus' },
+    { type: 'hybrid', count: 1, label: 'Dual Focus (Hybrid)' },
+    { type: 'dual', count: 2, label: 'Split Focus (Dual)' }
 ];
 
 class Game {
@@ -69,7 +61,6 @@ class Game {
 
         // Keyboard (WASD Only)
         window.addEventListener('keydown', (e) => {
-            // Prevent default browser actions (like Firefox Quick Find on ' or /)
             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', "'", '/'].includes(e.key) ||
                 ['w', 'a', 's', 'd'].includes(e.key.toLowerCase())) {
                 e.preventDefault();
@@ -77,6 +68,8 @@ class Game {
 
             const key = e.key.toLowerCase();
             if (['w', 'a', 's', 'd'].includes(key)) this.keys[key] = true;
+            // Space trigger for keyboard users if they prefer
+            if (e.key === ' ' && this.state === 'PLAYING') this.tryTrigger();
         });
 
         window.addEventListener('keyup', (e) => {
@@ -86,10 +79,8 @@ class Game {
 
         // UI Buttons
         document.getElementById('start-game-btn').onclick = () => this.startGame();
-        document.getElementById('play-again-btn').onclick = () => this.startGame();
-        document.getElementById('restart-btn').onclick = () => this.startGame();
-        document.getElementById('menu-btn').onclick = () => this.showMenu();
-        document.getElementById('back-home-btn').onclick = () => window.location.href = '../index.html';
+        // Play Again goes to Menu to allow changing Round Count
+        document.getElementById('play-again-btn').onclick = () => this.showMenu();
         document.getElementById('quit-btn').onclick = () => window.location.href = '../index.html';
     }
 
@@ -124,60 +115,82 @@ class Game {
             return;
         }
 
-        // If index exceeds defined stages, generate a random one (or repeat last)
-        let config;
-        if (index < STAGES.length) {
-            config = STAGES[index];
-        } else {
-            // Generate random stage for extra rounds
-            // 50% chance of Dual, 50% Single
-            const isDual = Math.random() > 0.5;
-            config = {
-                id: index + 1,
-                title: `Stage ${index + 1}`,
-                time: isDual ? 45 : 30,
-                pots: isDual
-                    ? [{ type: 'mouse', speed: 90 }, { type: 'wasd', speed: 90 }]
-                    : [{ type: 'mouse', speed: 150 }]
-            };
+        // Generate Random Stage Config
+        // Randomly pick one of the 4 varieties
+        const variety = STAGE_TYPES[Math.floor(Math.random() * STAGE_TYPES.length)];
+
+        let potConfigs = [];
+        let time = 30;
+
+        switch (variety.type) {
+            case 'mouse':
+                potConfigs = [{ type: 'mouse', speed: 80 + (index * 8) }];
+                time = 30;
+                break;
+            case 'wasd':
+                potConfigs = [{ type: 'wasd', speed: 60 + (index * 8) }];
+                time = 30;
+                break;
+            case 'hybrid':
+                // One Pot, Needs BOTH
+                potConfigs = [{ type: 'hybrid', speed: 70 + (index * 8) }];
+                time = 40;
+                break;
+            case 'dual':
+                // Two Pots, One Mouse One WASD (Slower)
+                potConfigs = [
+                    { type: 'mouse', speed: 50 + (index * 5) },
+                    { type: 'wasd', speed: 50 + (index * 5) }
+                ];
+                time = 45;
+                break;
         }
 
-        this.stageTime = config.time;
+        this.stageTime = time;
         this.pots = [];
         this.cursors = [];
 
-        // Setup Pots & Cursors based on config
-        config.pots.forEach((pConfig, i) => {
-            this.pots.push(new Pot(i, pConfig.type, pConfig.speed));
-
-            // Ensure we have a cursor for this type
-            if (!this.cursors.find(c => c.type === pConfig.type)) {
-                this.cursors.push({
-                    x: 400,
-                    y: 300,
-                    type: pConfig.type
-                });
-            }
+        // Setup Pots
+        potConfigs.forEach((pConfig, i) => {
+            this.pots.push(new PitchPot(i, pConfig.type, pConfig.speed));
         });
+
+        // Setup Cursors based on Pot Needs
+        const needsMouse = this.pots.some(p => p.type === 'mouse' || p.type === 'hybrid' || p.type === 'dual');
+        const needsWasd = this.pots.some(p => p.type === 'wasd' || p.type === 'hybrid' || p.type === 'dual');
+
+        if (needsMouse) this.cursors.push({ x: 400, y: 300, type: 'mouse' });
+        if (needsWasd) this.cursors.push({ x: 400, y: 300, type: 'wasd' });
+
 
         this.state = 'COUNTDOWN';
         this.updateUI();
+        this.showMessage(`Stage ${index + 1}`); // No announcement of type
 
         // 3-2-1 Countdown
+        // Sequence:
+        // 0s: "3"
+        // 1s: "2"
+        // 2s: "1"
+        // 3s: "Start!" appears
+        // 4s: "Start!" disappears -> Game Begins
+
         this.showMessage("3");
         setTimeout(() => { if (this.state === 'COUNTDOWN') this.showMessage("2"); }, 1000);
         setTimeout(() => { if (this.state === 'COUNTDOWN') this.showMessage("1"); }, 2000);
+        setTimeout(() => { if (this.state === 'COUNTDOWN') this.showMessage("Start!"); }, 3000);
+
         setTimeout(() => {
             if (this.state === 'COUNTDOWN') {
-                this.showMessage("Start!");
                 this.state = 'PLAYING';
             }
-        }, 3000);
+        }, 4000); // Start AFTER 'Start!' message (which lasts 1s)
     }
 
     showMenu() {
         this.state = 'MENU';
         document.getElementById('start-screen').classList.remove('hidden');
+        document.getElementById('game-over-screen').classList.add('hidden'); // Ensure hidden
         document.getElementById('ui-layer').style.visibility = 'hidden';
         if (this.timerInterval) clearInterval(this.timerInterval);
     }
@@ -185,22 +198,16 @@ class Game {
     tryTrigger() {
         if (this.state !== 'PLAYING') return;
 
-        // In Dual Mode (Stage 3), we check if BOTH are charged
-        if (this.pots.length > 1) {
-            const allCharged = this.pots.every(p => p.charge >= 100);
-            if (allCharged) {
-                this.handleSuccess(this.pots); // Pass all pots
-            } else {
-                this.handleFail(this.pots);
-            }
+        // Check completion based on pot types
+        // If ALL pots are charged, success
+        // If ANY pot is not charged, fail
+
+        const allCharged = this.pots.every(p => p.charge >= 100);
+
+        if (allCharged) {
+            this.handleSuccess(this.pots);
         } else {
-            // Single Mode
-            const pot = this.pots[0];
-            if (pot.charge >= 100) {
-                this.handleSuccess([pot]);
-            } else {
-                this.handleFail([pot]);
-            }
+            this.handleFail(this.pots);
         }
     }
 
@@ -244,7 +251,7 @@ class Game {
     }
 
     update(dt) {
-        // Always update cursors to allow positioning
+        // Always update cursors to allow positioning (even in countdown)
         const mouseCursor = this.cursors.find(c => c.type === 'mouse');
         if (mouseCursor) {
             mouseCursor.x = this.mouse.x;
@@ -271,150 +278,168 @@ class Game {
         });
 
         // Collision Resolution (Simple Elastic)
-        for (let i = 0; i < this.pots.length; i++) {
-            for (let j = i + 1; j < this.pots.length; j++) {
-                const p1 = this.pots[i];
-                const p2 = this.pots[j];
-                if (p1.completed || p2.completed) continue;
+        if (this.pots.length > 1) {
+            for (let i = 0; i < this.pots.length; i++) {
+                for (let j = i + 1; j < this.pots.length; j++) {
+                    const p1 = this.pots[i];
+                    const p2 = this.pots[j];
+                    if (p1.completed || p2.completed) continue;
 
-                const dx = p2.x - p1.x;
-                const dy = p2.y - p1.y;
-                const dist = Math.hypot(dx, dy);
-                const minDist = 100; // Radius 50 * 2
+                    const dx = p2.x - p1.x;
+                    const dy = p2.y - p1.y;
+                    const dist = Math.hypot(dx, dy);
+                    const minDist = 100; // Radius 50 * 2
 
-                if (dist < minDist) {
-                    // Resolve Overlap
-                    const angle = Math.atan2(dy, dx);
-                    const overlap = minDist - dist;
-                    const moveX = Math.cos(angle) * overlap * 0.5;
-                    const moveY = Math.sin(angle) * overlap * 0.5;
+                    if (dist < minDist) {
+                        const angle = Math.atan2(dy, dx);
+                        const overlap = minDist - dist;
+                        const moveX = Math.cos(angle) * overlap * 0.5;
+                        const moveY = Math.sin(angle) * overlap * 0.5;
 
-                    p1.x -= moveX;
-                    p1.y -= moveY;
-                    p2.x += moveX;
-                    p2.y += moveY;
+                        p1.x -= moveX;
+                        p1.y -= moveY;
+                        p2.x += moveX;
+                        p2.y += moveY;
 
-                    // Bounce (Swap velocities roughly)
-                    // Normal vector
-                    const nx = dx / dist;
-                    const ny = dy / dist;
+                        const nx = dx / dist;
+                        const ny = dy / dist;
 
-                    // Relative velocity
-                    const dvx = p2.vx - p1.vx;
-                    const dvy = p2.vy - p1.vy;
+                        if (!isFinite(nx) || !isFinite(ny)) continue;
 
-                    // Dot product
-                    const dot = dvx * nx + dvy * ny;
+                        const dvx = p2.vx - p1.vx;
+                        const dvy = p2.vy - p1.vy;
+                        const dot = dvx * nx + dvy * ny;
 
-                    if (dot < 0) {
-                        // Impulse
-                        p1.vx += nx * dot;
-                        p1.vy += ny * dot;
-                        p2.vx -= nx * dot;
-                        p2.vy -= ny * dot;
+                        if (dot < 0) {
+                            p1.vx += nx * dot;
+                            p1.vy += ny * dot;
+                            p2.vx -= nx * dot;
+                            p2.vy -= ny * dot;
+                        }
                     }
                 }
             }
         }
 
         // Charging Logic
-        if (this.pots.length > 1) {
-            // Dual Mode: BOTH must be overlapping
-            const p1 = this.pots[0];
-            const p2 = this.pots[1];
-            const c1 = this.cursors.find(c => c.type === p1.type);
-            const c2 = this.cursors.find(c => c.type === p2.type);
+        try {
+            this.pots.forEach(pot => {
+                if (pot.completed) return;
 
-            if (p1.completed || p2.completed) return;
+                let isCharging = false;
 
-            const dist1 = Math.hypot(c1.x - p1.x, c1.y - p1.y);
-            const dist2 = Math.hypot(c2.x - p2.x, c2.y - p2.y);
+                if (pot.type === 'hybrid') {
+                    // Requires BOTH cursors
+                    const cMouse = this.cursors.find(c => c.type === 'mouse');
+                    const cWasd = this.cursors.find(c => c.type === 'wasd');
 
-            // Check overlap (Radius 50 + 15 = 65 tolerance)
-            if (dist1 < 65 && dist2 < 65) {
-                const charge = Math.min(100, p1.charge + (0.15 * dt));
-                p1.charge = charge;
-                p2.charge = charge; // Sync charge
-            } else {
-                const charge = Math.max(0, p1.charge - (0.3 * dt));
-                p1.charge = charge;
-                p2.charge = charge;
-            }
+                    if (cMouse && cWasd) {
+                        const d1 = Math.hypot(cMouse.x - pot.x, cMouse.y - pot.y);
+                        const d2 = Math.hypot(cWasd.x - pot.x, cWasd.y - pot.y);
+                        if (d1 < 35 && d2 < 35) isCharging = true;
+                    }
+                } else {
+                    // Normal single type check
+                    // 'mouse' pot needs 'mouse' cursor
+                    // 'wasd' pot needs 'wasd' cursor
+                    const cursor = this.cursors.find(c => c.type === pot.type);
+                    if (cursor) {
+                        const dist = Math.hypot(cursor.x - pot.x, cursor.y - pot.y);
+                        if (dist < 35) isCharging = true;
+                    }
+                }
 
-        } else if (this.pots.length === 1) {
-            // Single Mode
-            const pot = this.pots[0];
-            if (pot.completed) return;
+                if (isCharging) {
+                    pot.charge = Math.min(100, pot.charge + (0.15 * dt));
+                } else {
+                    pot.charge = Math.max(0, pot.charge - (0.3 * dt));
+                }
+            });
 
-            const cursor = this.cursors.find(c => c.type === pot.type);
-            const dist = Math.hypot(cursor.x - pot.x, cursor.y - pot.y);
-
-            if (dist < 65) {
-                pot.charge = Math.min(100, pot.charge + (0.15 * dt));
-            } else {
-                pot.charge = Math.max(0, pot.charge - (0.3 * dt));
-            }
+        } catch (err) {
+            console.error("Update Error:", err);
         }
+    }
+
+    updateUI() {
+        document.getElementById('score-display').innerText = 'Score: ' + this.score;
+        document.getElementById('time-display').innerText = Math.ceil(this.stageTime);
+        document.getElementById('combo-display').innerText = this.combo;
+        document.getElementById('stage-display').innerText = this.currentStageIndex + 1;
+    }
+
+    endGame(reason, victory = false) {
+        this.state = 'GAMEOVER';
+        if (this.timerInterval) clearInterval(this.timerInterval);
+
+        document.getElementById('game-over-screen').classList.remove('hidden');
+        document.getElementById('ui-layer').style.visibility = 'hidden';
+
+        document.getElementById('final-score').innerText = this.score;
+        document.getElementById('final-combo').innerText = this.maxCombo;
+        document.querySelector('#game-over-screen .screen-title').innerText = reason;
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // Visibility Rule: Only draw pots/cursors if PLAYING or GAMEOVER
+        // Ensure they are hidden during COUNTDOWN
+        if (this.state !== 'PLAYING' && this.state !== 'GAMEOVER') return;
+
         // Draw Pots
-        if (this.state === 'PLAYING' || this.state === 'GAMEOVER') {
-            this.pots.forEach(pot => {
-                if (!pot.completed) pot.draw(this.ctx);
-            });
-        }
+        this.pots.forEach(pot => pot.draw(this.ctx));
 
-        // Draw Cursors & Charge
+        // Draw Cursors
         this.cursors.forEach(cursor => {
-            // Find linked pot to get charge
-            const pot = this.pots.find(p => p.type === cursor.type);
-            const charge = pot ? pot.charge : 0;
+            this.ctx.beginPath();
 
-            // Draw Charge Circle around Cursor
-            if (charge > 0) {
+            // Distinct Shapes
+            // Mouse = Hollow Circle
+            // WASD = Hollow Square
+
+            this.ctx.lineWidth = 3;
+            // Charge Ring Color
+
+            // First draw the Cursor Indicator
+            if (cursor.type === 'mouse') {
+                this.ctx.arc(cursor.x, cursor.y, 10, 0, Math.PI * 2);
+                this.ctx.strokeStyle = '#fff';
+                this.ctx.stroke();
+                this.ctx.fillStyle = '#ffeb3b'; // Yellow Center
+                this.ctx.fill();
+            } else {
+                // WASD Circle (Same shape, different color)
+                this.ctx.arc(cursor.x, cursor.y, 10, 0, Math.PI * 2);
+                this.ctx.strokeStyle = '#fff';
+                this.ctx.stroke();
+                this.ctx.fillStyle = '#4fc3f7'; // Light Blue
+                this.ctx.fill();
+            }
+
+            // Draw Charge Ring (Feedback for nearest/active pot)
+            // We search for pots charging THIS cursor or being charged BY this cursor
+            const activePot = this.pots.find(p => {
+                if (p.completed) return false;
+                // Hybrid shares logic, but we can just show ring if ANY charge exists on relevant pot
+                if (p.type === 'hybrid' || p.type === cursor.type) {
+                    return p.charge > 0;
+                }
+                return false;
+            });
+
+            if (activePot && activePot.charge > 0) {
                 this.ctx.beginPath();
-                this.ctx.arc(cursor.x, cursor.y, 25, -Math.PI / 2, (-Math.PI / 2) + (Math.PI * 2 * (charge / 100)));
-                this.ctx.strokeStyle = charge >= 100 ? '#00ff00' : '#ffd700';
+                this.ctx.arc(cursor.x, cursor.y, 20, 0, Math.PI * 2 * (activePot.charge / 100));
+
+                // Color depends on type
+                const hue = cursor.type === 'mouse' ? '59' : '190'; // Yellow vs Blue
+
+                this.ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
                 this.ctx.lineWidth = 4;
                 this.ctx.stroke();
             }
-
-            this.ctx.beginPath();
-            if (cursor.type === 'mouse') {
-                this.ctx.arc(cursor.x, cursor.y, 15, 0, Math.PI * 2);
-                this.ctx.fillStyle = '#c5a059';
-                this.ctx.fill();
-                this.ctx.strokeStyle = '#fff';
-                this.ctx.lineWidth = 2;
-                this.ctx.stroke();
-            } else {
-                this.ctx.arc(cursor.x, cursor.y, 15, 0, Math.PI * 2);
-                this.ctx.fillStyle = '#4fc3f7';
-                this.ctx.fill();
-                this.ctx.strokeStyle = '#fff';
-                this.ctx.lineWidth = 2;
-                this.ctx.stroke();
-            }
         });
-    }
-
-    updateUI() {
-        document.getElementById('score-display').textContent = `Score: ${this.score}`;
-        document.getElementById('time-display').textContent = this.stageTime;
-        document.getElementById('combo-display').textContent = this.combo;
-        document.getElementById('stage-display').textContent = this.currentStageIndex + 1;
-    }
-
-    endGame(title, isWin = false) {
-        this.state = 'GAMEOVER';
-        clearInterval(this.timerInterval);
-        document.getElementById('game-over-screen').classList.remove('hidden');
-        document.querySelector('#game-over-screen .screen-title').textContent = title;
-        document.getElementById('final-score').textContent = this.score;
-        document.getElementById('final-combo').textContent = this.maxCombo;
     }
 
     loop(timestamp) {
@@ -426,47 +451,59 @@ class Game {
         const dt = timestamp - this.lastTime;
         this.lastTime = timestamp;
 
-        this.update(dt);
-        this.draw();
+        try {
+            this.update(dt);
+            this.draw();
+        } catch (e) {
+            console.error("Game Loop Error:", e);
+        }
         requestAnimationFrame((t) => this.loop(t));
     }
 }
 
-class Pot {
+
+class PitchPot {
     constructor(id, type, speed) {
         this.id = id;
-        this.type = type;
+        this.type = type; // 'mouse', 'wasd', 'hybrid'
         this.speed = speed;
         this.x = Math.random() * 600 + 100;
         this.y = Math.random() * 400 + 100;
 
         // Constant Velocity Direction
         const angle = Math.random() * Math.PI * 2;
-        this.vx = Math.cos(angle) * (speed / 1000); // pixels per ms
+        this.vx = Math.cos(angle) * (speed / 1000);
         this.vy = Math.sin(angle) * (speed / 1000);
 
         this.charge = 0;
         this.completed = false;
     }
 
-    update(dt) {
-        this.x += this.vx * dt;
-        this.y += this.vy * dt;
+    update(dt, speedMod = 1.0) {
+        this.x += this.vx * dt * speedMod;
+        this.y += this.vy * dt * speedMod;
 
         // Bounce off walls
         if (this.x < 40 || this.x > 760) this.vx *= -1;
         if (this.y < 40 || this.y > 560) this.vy *= -1;
 
-        // Clamp to ensure they don't get stuck
+        // Clamp
         this.x = Math.max(40, Math.min(760, this.x));
         this.y = Math.max(40, Math.min(560, this.y));
     }
 
     draw(ctx) {
+        if (this.completed) return; // Don't draw completed pots
+
         // Draw Pot Body
         ctx.beginPath();
         ctx.arc(this.x, this.y, 50, 0, Math.PI * 2);
-        ctx.fillStyle = this.type === 'mouse' ? '#5d4037' : '#455a64';
+
+        // Distinct Colors for Pot Type
+        if (this.type === 'mouse') ctx.fillStyle = '#5d4037'; // Brown (Standard)
+        else if (this.type === 'wasd') ctx.fillStyle = '#455a64'; // Grey (Keyboard)
+        else ctx.fillStyle = '#7b1fa2'; // Purple (Hybrid)
+
         ctx.fill();
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 3;
@@ -475,7 +512,21 @@ class Pot {
         ctx.fillStyle = '#fff';
         ctx.font = '16px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText(this.type === 'mouse' ? 'MOUSE' : 'WASD', this.x, this.y + 6);
+
+        let label = 'MOUSE';
+        if (this.type === 'wasd') label = 'WASD';
+        if (this.type === 'hybrid') label = 'BOTH';
+
+        ctx.fillText(label, this.x, this.y + 6);
+
+        // Progress Ring inside Pot
+        if (this.charge > 0) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 45, 0, Math.PI * 2 * (this.charge / 100));
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+        }
     }
 }
 

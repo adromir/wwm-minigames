@@ -9,7 +9,6 @@ A collection of atmospheric **Wuxia-style** web minigames, inspired by the aesth
 ## 🏯 Enter the Pavilion
 
 [**Play Now / 立即开始**](https://adromir.github.io/wwm-minigames/)
-*(Note: Adjust this link to your repo: `https://<your-user>.github.io/<repo-name>/`)*
 
 ---
 
@@ -40,6 +39,23 @@ A rhythm game played on a virtual *Guqin*. Cultivate your inner harmony by strik
 * **Description:** A test of spirit and reflexes. Prove your worthiness to a wild steed by matching its movements in the ring of fire.
 * **Mechanics:** Directional rhythm matching (`W`, `A`, `S`, `D`). Maintain your stamina and fill the taming meter before time runs out.
 
+### 4. 🎣 Jiangnan Angler (垂钓)
+
+* **Status:** ✨ Playable
+* **Description:** A serene yet challenging test of focus. Cast your line into the deep waters and engage in a battle of wills with nature.
+* **Mechanics:**
+    *   **Cast:** Hold `Space` to charge for distance.
+    *   **Lure:** Tap `Space` to attract fish.
+    *   **Struggle:** Use `Space` to keep the tension bar on the fish icon to reel it in.
+
+### 5. 🦅 Archery (射艺)
+
+* **Status:** ✨ Playable
+* **Description:** Draw your bow and pierce the clouds. Strike the flying flock with precision in an ink-wash landscape.
+* **Mechanics:**
+    *   **Aim & Fire:** Click on flying birds to shoot them.
+    *   **Focus:** Press `1` to enter "Focus State" (Slow Motion) for precision shots. 
+
 ---
 
 ## 📂 Project Structure
@@ -50,6 +66,8 @@ If you are hosting this yourself, the structure represents the layout of the pav
 * `/graceful-melody/` - **The Music Chamber** (Rhythm Game)
 * `/pitch-pot/` - **The Archery Range** (Precision Game)
 * `/horse-taming/` - **The Corral** (Reflex Game)
+* `/fishing/` - **The River Bank** (Patience Game)
+* `/archery/` - **The Cloud Peaks** (Shooting Game)
 
 ---
 

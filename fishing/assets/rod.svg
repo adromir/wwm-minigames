@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bamboo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b4513;stop-opacity:1" /> <!-- SaddleBrown -->
+      <stop offset="50%" style="stop-color:#cd853f;stop-opacity:1" /> <!-- Peru -->
+      <stop offset="100%" style="stop-color:#8b4513;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rod Segments -->
+  <!-- Handle -->
+  <path d="M10 190 L 50 150" stroke="url(#bamboo)" stroke-width="8" stroke-linecap="round"/>
+  <!-- Joint 1 -->
+  <circle cx="50" cy="150" r="5" fill="#3e2723"/>
+  
+  <!-- Segment 2 -->
+  <path d="M50 150 Q 80 120 100 100" stroke="url(#bamboo)" stroke-width="6" fill="none"/>
+  <!-- Joint 2 -->
+  <circle cx="100" cy="100" r="4" fill="#3e2723"/>
+
+  <!-- Segment 3 (Tip) -->
+  <path d="M100 100 Q 150 50 180 40" stroke="url(#bamboo)" stroke-width="4" fill="none"/>
+  
+  <!-- Line (Dynamic part will be drawn by Canvas usually, but here is the visual base) -->
+  <circle cx="180" cy="40" r="2" fill="#c0c0c0"/>
+  
+  <!-- Tassel/Charm on Handle -->
+  <path d="M15 185 Q 10 200 25 200" stroke="#a83f39" stroke-width="2" fill="none"/>
+  <circle cx="25" cy="200" r="3" fill="#a83f39"/>
+</svg>

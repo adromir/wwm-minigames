@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WWM Minigames - Fishing</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="game-container">
+        <canvas id="fishing-canvas"></canvas>
+
+        <div id="rod-display"></div>
+
+        <div class="ui-layer">
+            <div class="back-btn-zone"></div> <!-- Hover zone for cursor -->
+            <a href="../index.html" class="back-btn">← Back to Pavilion</a>
+
+            <header>
+                <h1>Jianghu Angler</h1>
+                <div id="instructions">Click to Cast</div>
+            </header>
+
+            <div id="power-bar-container">
+                <div id="power-bar-fill"></div>
+            </div>
+
+            <!-- New Arc Gauge UI -->
+            <div id="struggle-ui">
+                <div id="gauge-container">
+                    <svg class="gauge-svg" viewBox="0 0 300 150">
+                        <!-- Background Track -->
+                        <path id="gauge-track" d="M 30 140 A 120 120 0 0 1 270 140" fill="none"
+                            class="gauge-track-style" />
+                        <!-- Green Zone (Fish) -->
+                        <path id="gauge-zone" d="M 30 140 A 120 120 0 0 1 270 140" fill="none"
+                            class="gauge-zone-style" />
+                        <!-- White Tick (Player) - Shortened and Thinner -->
+                        <line id="gauge-tick" x1="150" y1="12" x2="150" y2="28" class="gauge-tick-style" />
+                    </svg>
+
+                    <div id="center-status">
+                        <svg class="progress-ring-svg" viewBox="0 0 100 100">
+                            <circle class="ring-bg" cx="50" cy="50" r="45" />
+                            <circle id="progress-ring-fill" class="ring-fill" cx="50" cy="50" r="45" />
+                        </svg>
+                        <div id="fish-icon-center">
+                            <img src="assets/fish.svg" alt="Fish">
+                        </div>
+                    </div>
+                </div>
+                <div id="instructions-sub" style="margin-top: 20px; color: var(--color-foam); font-size: 1.2rem;">Keep
+                    the White Line in the Green Zone!</div>
+            </div>
+
+            <div id="start-indicator">FISHING STARTS</div>
+        </div>
+
+        <div id="start-screen" class="screen active">
+            <h1>Ready to Fish?</h1>
+            <p>
+                Patience is the key.<br>
+                Hold SPACE to Cast.<br>
+                Use MOUSE to keep the Line in the Zone!
+            </p>
+            <button class="btn" id="start-btn">Start Fishing</button>
+            <button class="btn secondary" onclick="window.location.href='../index.html'"
+                style="margin-top: 10px; font-size: 1rem; border-color: var(--color-silver); color: var(--color-silver);">Back
+                to Pavilion</button>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <h1 id="result-title">Great Catch!</h1>
+            <div id="fish-display" style="font-size: 5rem; margin: 20px;">🐟</div>
+            <p id="result-desc">A legendary Golden Carp!</p>
+            <button class="btn" id="restart-btn">Cast Again</button>
+            <button class="btn secondary" onclick="window.location.href='../index.html'"
+                style="margin-top: 10px; font-size: 1rem; border-color: var(--color-silver); color: var(--color-silver);">Back
+                to Pavilion</button>
+        </div>
+    </div>
+    <script src="game.js?v=14"></script>
+</body>
+
+</html>
